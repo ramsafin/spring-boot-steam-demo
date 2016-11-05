@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <title tiles:fragment="title">Messages : Login</title>
+    <link rel="stylesheet" th:href="@{/resources/css/openid.css}" />
+</head>
+<body>
+<div tiles:fragment="content">
+    <form name="form" th:action="@{/login/openid}" method="post" id="openid_form">
+
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+
+            <div id="openid_input_area">
+                <input id="openid_identifier" name="openid_identifier" type="hidden" value="http://steamcommunity.com/openid" />
+                <input id="openid_submit" type="image" th:src="@{/resources/img/login-steam.png}" alt="Sign in with Steam"/>
+            </div>
+    </form>
+</div>
+</body>
+</html>
