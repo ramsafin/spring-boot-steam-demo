@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     private Long id;
 
@@ -20,14 +20,21 @@ public class User implements UserDetails {
 
     private LocalDateTime joinDateTime;
 
-    private boolean sex; //0 - female, 1 - male
-
     private String aboutMe;
 
-    //TODO validate
     private String telephone;
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
+
+    public User() {}
+
+    public User(Long id, String fullName, String aboutMe, String telephone) {
+        this.id = id;
+        this.fullName = fullName;
+        this.aboutMe = aboutMe;
+        this.telephone = telephone;
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,15 +62,6 @@ public class User implements UserDetails {
 
     public void setJoinDateTime(LocalDateTime joinDateTime) {
         this.joinDateTime = joinDateTime;
-    }
-
-    @Column(name = "sex")
-    public boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(boolean sex) {
-        this.sex = sex;
     }
 
     @Column(name = "telephone")
@@ -146,4 +144,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return String.format("User: [name : %s, telephone : %s]", fullName, telephone);
+    }
 }

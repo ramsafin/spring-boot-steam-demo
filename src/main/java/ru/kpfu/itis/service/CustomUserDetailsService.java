@@ -8,8 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.model.entity.UserOpenIds;
 import ru.kpfu.itis.repository.SpringUserRepository;
+
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
@@ -29,17 +32,27 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
         log.error("Loading user details ...");
 
         try {
-            return springUserRepository.findByOpenid(token.getName());
+            log.error("Finding user by token " + token.getName());
+
+            Optional<User> user = springUserRepository.findByOpenid(token.getName());
+
+            if (user.isPresent()) return user.get();
+
+            throw new UsernameNotFoundException("User is no found");
 
         } catch (RuntimeException e) {
 
-            ru.kpfu.itis.model.entity.User u = new ru.kpfu.itis.model.entity.User();
+            log.error("Exception caught", e);
+
+            User u = new User();
             UserOpenIds openIds = new UserOpenIds();
             openIds.setOpenidUrl(token.getName());
             u.addOpenId(openIds);
             openIds.setUser(u);
 
+            log.error("Saving user and return ...");
             return springUserRepository.save(u);
         }
+
     }
 }
