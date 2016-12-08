@@ -6,3 +6,4 @@ out
 *.class
 *.war
 *.jar
+application.properties

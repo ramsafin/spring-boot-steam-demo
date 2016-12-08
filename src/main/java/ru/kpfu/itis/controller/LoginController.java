@@ -1,5 +1,6 @@
 package ru.kpfu.itis.controller;
 
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.dto.UserDTO;
+import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
+import ru.kpfu.itis.service.HttpClientGame;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -52,6 +57,15 @@ public class LoginController {
         model.addAttribute("authentication", authentication);
         return "show";
     }
+
+ //update game db
+    @GetMapping("/update")
+    @ResponseBody
+    public String update(){
+
+       return userService.getAllGames();
+
+    };
 
 
     @GetMapping("/login/continue/{id}")

@@ -26,6 +26,20 @@ public class User implements UserDetails{
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
 
+    private Set<Game> gamesSet = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_game",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id"))
+    public Set<Game> getGamesSet () {
+        return gamesSet;
+    }
+
+    public void setGamesSet(Set<Game> gamesSet) {
+        this.gamesSet = gamesSet;
+    }
+
     public User() {}
 
     public User(Long id, String fullName, String aboutMe, String telephone) {
