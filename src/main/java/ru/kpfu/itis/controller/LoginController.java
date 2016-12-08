@@ -1,6 +1,5 @@
 package ru.kpfu.itis.controller;
 
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.dto.UserDTO;
 import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.HttpClientGame;
+import ru.kpfu.itis.service.SearchService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
@@ -27,10 +25,12 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService;
+    private final SearchService searchService;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, SearchService searchService) {
         this.userService = userService;
+        this.searchService = searchService;
     }
 
     @GetMapping("/login")
@@ -60,10 +60,9 @@ public class LoginController {
 
  //update game db
     @GetMapping("/update")
-    @ResponseBody
     public String update(){
-
-       return userService.getAllGames();
+        List<Game> gameList = searchService.getAllGames();
+       return gameList.get(gameList.size()-29).getId().toString()+" "+ gameList.get(gameList.size()-30).getId().toString();
 
     };
 

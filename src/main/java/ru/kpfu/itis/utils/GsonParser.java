@@ -1,10 +1,11 @@
-package ru.kpfu.itis.service;
+package ru.kpfu.itis.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ru.kpfu.itis.model.entity.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,23 +14,24 @@ import java.util.List;
  * Created by Daniel Shchepetov on 08.12.2016.
  */
 public class GsonParser {
-  private JsonParser parser = new JsonParser();
-
-    public String parseGameList(String stringToParse){
+    private JsonParser parser;
+    private List<Game> gameList;
+    public List<Game> parseGameList(String stringToParse) {
+        parser = new JsonParser();
         JsonElement jsonTree = parser.parse(stringToParse);
         JsonObject obj = jsonTree.getAsJsonObject();
-        obj = obj.getAsJsonObject("app_list");
+        obj = obj.getAsJsonObject   ("applist");
         JsonElement apps = obj.get("apps");
 
         Iterator<JsonElement> iterator = apps.getAsJsonObject().get("app").getAsJsonArray().iterator();
-        Game game = new Game();
-       // game.setId(apps.getAsJsonObject().get("app").getAsJsonArray().get(1).getAsJsonObject().get("appid").getAsLong());
-        while (iterator.hasNext()){
-            JsonElement element = iterator.next();
-            System.out.println(element.getAsString());
-        }
 
-        return apps.getAsString();
+        gameList = new ArrayList();
+        while (iterator.hasNext()) {
+            JsonElement element = iterator.next();
+            Game game = new Game(element.getAsJsonObject().get("appid").getAsLong(),element.getAsJsonObject().get("name").getAsString());
+            gameList.add(game);
+        }
+        return gameList;
     }
 
 

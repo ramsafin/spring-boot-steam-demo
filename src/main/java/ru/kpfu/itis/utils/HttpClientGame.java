@@ -1,6 +1,5 @@
-package ru.kpfu.itis.service;
+package ru.kpfu.itis.utils;
 
-import com.google.gson.Gson;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,7 +7,6 @@ import org.apache.http.client.methods.HttpGet;
 
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.springframework.stereotype.Service;
 import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.entity.Game;
 
@@ -35,7 +33,7 @@ public class HttpClientGame {
         parser = new GsonParser();
     }
 
-    public String getAll() throws ServerException {
+    public List<Game> getAll() throws ServerException {
         try {
             client = HttpClientBuilder.create().build();
             HttpGet get = new HttpGet(URI);
