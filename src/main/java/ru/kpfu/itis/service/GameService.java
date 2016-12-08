@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.repository.GameRepository;
-import ru.kpfu.itis.repository.SpringUserRepository;
+import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
 import java.util.List;
@@ -16,8 +16,7 @@ import java.util.List;
 @Service
 public class GameService {
 
-
-   private final GameRepository gameRepository;
+    private final GameRepository gameRepository;
 
     @Autowired
     public GameService(GameRepository gameRepository) {
@@ -25,11 +24,15 @@ public class GameService {
     }
     public List<Game> getAllGames(){
         List<Game> gameList = null;
+        String gamesURI = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/";
         try {
-            gameList = new HttpClientGame().getAll();
+
+           String gameString = new HttpClientGame(gamesURI).getAll();
+            gameList = new GsonParser().parseGameList(gameString);
         } catch (ServerException e) {
             e.printStackTrace();
         }
+
         gameRepository.save(gameList);
         return gameList;
     }

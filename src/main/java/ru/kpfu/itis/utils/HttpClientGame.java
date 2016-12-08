@@ -22,18 +22,17 @@ import java.util.List;
  */
 
 public class HttpClientGame {
-    private static String URI = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/";
     private HttpClient client;
     private Header contentTypeHeader;
-    private GsonParser parser;
+    private String URI;
 
-    public HttpClientGame() {
+    public HttpClientGame(String URI) {
         contentTypeHeader = new BasicHeader("Content-Type", "application/json; charset=UTF-8");
         client = HttpClientBuilder.create().build();
-        parser = new GsonParser();
+        this.URI = URI;
     }
 
-    public List<Game> getAll() throws ServerException {
+    public String getAll() throws ServerException {
         try {
             client = HttpClientBuilder.create().build();
             HttpGet get = new HttpGet(URI);
@@ -42,7 +41,7 @@ public class HttpClientGame {
             HttpResponse response = client.execute(get);
 
             throwServerException(response, 200);
-            return parser.parseGameList(inputStreamToString(response.getEntity().getContent()));
+            return inputStreamToString(response.getEntity().getContent());
 
 
         } catch (IOException e) {

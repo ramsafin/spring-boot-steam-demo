@@ -16,6 +16,7 @@ import java.util.List;
 public class GsonParser {
     private JsonParser parser;
     private List<Game> gameList;
+    private List<Long> gameIdList;
     public List<Game> parseGameList(String stringToParse) {
         parser = new JsonParser();
         JsonElement jsonTree = parser.parse(stringToParse);
@@ -32,6 +33,24 @@ public class GsonParser {
             gameList.add(game);
         }
         return gameList;
+    }
+
+    public List<Long> parseUserGameList(String stringToParse) {
+        parser = new JsonParser();
+        JsonElement jsonTree = parser.parse(stringToParse);
+        JsonObject obj = jsonTree.getAsJsonObject();
+        obj = obj.getAsJsonObject   ("response");
+        JsonElement games = obj.get("games");
+
+        Iterator<JsonElement> iterator = games.getAsJsonArray().iterator();
+
+        gameIdList = new ArrayList<Long>();
+        while (iterator.hasNext()) {
+            JsonElement element = iterator.next();
+
+            gameIdList.add(element.getAsJsonObject().get("appid").getAsLong());
+        }
+        return gameIdList;
     }
 
 

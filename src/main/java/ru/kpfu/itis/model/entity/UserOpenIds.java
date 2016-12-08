@@ -11,7 +11,7 @@ public class UserOpenIds {
     private User user;
 
     @Id
-    @Column(name = "openid_url")
+    @Column(name = "openid_url", length = 100)
     public String getOpenidUrl() {
         return openidUrl;
     }

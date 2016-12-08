@@ -66,7 +66,11 @@ public class LoginController {
 
     };
 
-
+@GetMapping("/list")
+@ResponseBody
+public Long games(){
+    return userService.getGames().get(1);
+}
     @GetMapping("/login/continue/{id}")
     public String continueLogin(@PathVariable Long id, Principal principal, ModelMap model) {
 
