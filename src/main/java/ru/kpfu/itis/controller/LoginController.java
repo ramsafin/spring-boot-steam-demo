@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.dto.UserDTO;
 import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.SearchService;
+import ru.kpfu.itis.service.GameService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
@@ -25,12 +25,12 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService;
-    private final SearchService searchService;
+    private final GameService gameService;
 
     @Autowired
-    public LoginController(UserService userService, SearchService searchService) {
+    public LoginController(UserService userService, GameService gameService) {
         this.userService = userService;
-        this.searchService = searchService;
+        this.gameService = gameService;
     }
 
     @GetMapping("/login")
@@ -61,7 +61,7 @@ public class LoginController {
  //update game db
     @GetMapping("/update")
     public String update(){
-        List<Game> gameList = searchService.getAllGames();
+        List<Game> gameList = gameService.getAllGames();
        return gameList.get(gameList.size()-29).getId().toString()+" "+ gameList.get(gameList.size()-30).getId().toString();
 
     };
