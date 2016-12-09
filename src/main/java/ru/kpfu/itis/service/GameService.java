@@ -8,6 +8,7 @@ import ru.kpfu.itis.repository.GameRepository;
 import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,14 @@ import java.util.List;
 public class GameService {
 
     private final GameRepository gameRepository;
-    
+
 
     @Autowired
     public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 
+    @PostConstruct
     public List<Game> getAllGames() {
         List<Game> gameList = new ArrayList<>();
         String gamesURI = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/";
