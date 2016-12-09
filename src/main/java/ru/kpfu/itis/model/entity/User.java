@@ -18,6 +18,10 @@ public class User implements UserDetails{
 
     private String fullName;
 
+    private String steamNickname;
+
+    private String avatarUrl;
+
     private LocalDateTime joinDateTime;
 
     private String aboutMe;
@@ -64,6 +68,7 @@ public class User implements UserDetails{
     public String getFullName() {
         return fullName;
     }
+
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
@@ -161,5 +166,23 @@ public class User implements UserDetails{
     @Override
     public String toString() {
         return String.format("User: [name : %s, telephone : %s]", fullName, telephone);
+    }
+
+    @Column(name = "steam_nickname")
+    public String getSteamNickname() {
+        return steamNickname;
+    }
+
+    public void setSteamNickname(String steamNickname) {
+        this.steamNickname = steamNickname;
+    }
+
+    @Column(name = "avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
