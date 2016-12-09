@@ -8,6 +8,7 @@ import ru.kpfu.itis.repository.GameRepository;
 import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,23 +18,27 @@ import java.util.List;
 public class GameService {
 
     private final GameRepository gameRepository;
+    
 
     @Autowired
     public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
-    public List<Game> getAllGames(){
-        List<Game> gameList = null;
+
+    public List<Game> getAllGames() {
+        List<Game> gameList = new ArrayList<>();
         String gamesURI = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/";
         try {
 
-           String gameString = new HttpClientGame(gamesURI).getAll();
+            String gameString = new HttpClientGame(gamesURI).getAll();
             gameList = new GsonParser().parseGameList(gameString);
         } catch (ServerException e) {
             e.printStackTrace();
         }
-
-        gameRepository.save(gameList);
+        //there is a troubles with saving emodji to DB.
+        List<Game> newGameList = gameList.subList(0, 20000);
+        newGameList.addAll(gameList.subList(21000, gameList.size() - 1));
+        gameRepository.save(newGameList);
         return gameList;
     }
 }

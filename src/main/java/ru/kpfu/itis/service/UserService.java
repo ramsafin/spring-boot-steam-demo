@@ -1,5 +1,6 @@
 package ru.kpfu.itis.service;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.exception.ServerException;
@@ -9,6 +10,7 @@ import ru.kpfu.itis.repository.SpringUserRepository;
 import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 @Service
@@ -23,6 +25,8 @@ GsonParser parser = new GsonParser();
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
+
 
     public List<Long> getGames(){
         List<Long> gameList = null;

@@ -10,14 +10,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.dto.UserDTO;
-import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.GameService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
+
 
 @Controller
 public class LoginController {
@@ -25,12 +23,12 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService;
-    private final GameService gameService;
+
 
     @Autowired
-    public LoginController(UserService userService, GameService gameService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
-        this.gameService = gameService;
+
     }
 
     @GetMapping("/login")
@@ -58,19 +56,13 @@ public class LoginController {
         return "show";
     }
 
- //update game db
-    @GetMapping("/update")
-    public String update(){
-        List<Game> gameList = gameService.getAllGames();
-       return gameList.get(gameList.size()-29).getId().toString()+" "+ gameList.get(gameList.size()-30).getId().toString();
 
-    };
+    @GetMapping("/list")
+    @ResponseBody
+    public Long games() {
+        return userService.getGames().get(1);
+    }
 
-@GetMapping("/list")
-@ResponseBody
-public Long games(){
-    return userService.getGames().get(1);
-}
     @GetMapping("/login/continue/{id}")
     public String continueLogin(@PathVariable Long id, Principal principal, ModelMap model) {
 
