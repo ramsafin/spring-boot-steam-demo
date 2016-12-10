@@ -10,6 +10,13 @@ public class UserOpenIds {
 
     private User user;
 
+    public UserOpenIds() {
+    }
+
+    public UserOpenIds(String openidUrl) {
+        this.openidUrl = openidUrl;
+    }
+
     @Id
     @Column(name = "openid_url")
     public String getOpenidUrl() {

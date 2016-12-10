@@ -45,10 +45,8 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
             log.error("Exception caught", e);
 
             User u = new User();
-            UserOpenIds openIds = new UserOpenIds();
-            openIds.setOpenidUrl(token.getName());
+            UserOpenIds openIds = new UserOpenIds(token.getName());
             u.addOpenId(openIds);
-            openIds.setUser(u);
 
             log.error("Saving user and return ...");
             return springUserRepository.save(u);
