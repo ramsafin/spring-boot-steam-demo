@@ -7,9 +7,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -28,12 +26,14 @@ public class User implements UserDetails {
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
 
     @JsonIgnore
-    private Set<Chat> chatSet = new HashSet<>();
+    private List<Chat> chatList = new LinkedList<>();
 
     public User() {
+        this.joinDateTime = LocalDateTime.now();
     }
 
     public User(Long id, String fullName, String aboutMe, String telephone) {
+        this();
         this.id = id;
         this.fullName = fullName;
         this.aboutMe = aboutMe;
@@ -82,21 +82,14 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
-    public Set<Chat> getChatSet() {
-        return chatSet;
+    public List<Chat> getChatList() {
+        return chatList;
     }
 
 
     public void addOpenId(UserOpenIds openIds) {
         openIds.setUser(this);
         this.userOpenIdsSet.add(openIds);
-    }
-
-
-    @PrePersist
-    public void setUpBeforePersist() {
-        //set up joined at date
-        this.joinDateTime = LocalDateTime.now();
     }
 
 
@@ -124,8 +117,8 @@ public class User implements UserDetails {
         this.userOpenIdsSet = userOpenIdsSet;
     }
 
-    public void setChatSet(Set<Chat> chatSet) {
-        this.chatSet = chatSet;
+    public void setChatList(List<Chat> chatList) {
+        this.chatList = chatList;
     }
 
     @JsonIgnore

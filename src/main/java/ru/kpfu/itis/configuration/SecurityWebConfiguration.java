@@ -1,6 +1,7 @@
 package ru.kpfu.itis.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,7 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
                     .antMatchers("/chat/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/chat/**").permitAll()
                     .antMatchers("/dev/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .anyRequest().authenticated()
@@ -30,7 +32,7 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login?fail")
                     .successHandler(authenticationSuccessHandler())
                 .and()
-                .csrf();
+                .csrf().disable();
     }
 
 

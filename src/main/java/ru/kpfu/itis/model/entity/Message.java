@@ -13,10 +13,8 @@ public class Message implements Serializable {
 
     private Long id;
 
-    @JsonIgnore
     private Chat chat;
 
-    @JsonIgnore
     private User sender;
 
     private String messageText;
@@ -27,10 +25,16 @@ public class Message implements Serializable {
         this.sentAt = LocalDateTime.now();
     }
 
-    public Message(User sender, String messageText) {
+
+    public Message(Chat chat, User sender, String messageText) {
         this();
+        this.chat = chat;
         this.sender = sender;
         this.messageText = messageText;
+    }
+
+    public Message(User sender, String messageText) {
+        this(null, sender, messageText);
     }
 
     @Id
@@ -39,11 +43,13 @@ public class Message implements Serializable {
         return id;
     }
 
+    @JsonIgnore
     @ManyToOne
     public Chat getChat() {
         return chat;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     public User getSender() {
         return sender;

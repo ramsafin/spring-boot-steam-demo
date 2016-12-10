@@ -6,6 +6,8 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,9 +20,9 @@ public class Chat implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    private Set<Message> messageList = new HashSet<>();
+    private List<Message> messageList = new LinkedList<>();
 
-    private Set<User> userSet;
+    private Set<User> userSet = new HashSet<>();
 
     public Chat() {
         this.createdAt = LocalDateTime.now();
@@ -48,8 +50,8 @@ public class Chat implements Serializable {
         return updatedAt;
     }
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
-    public Set<Message> getMessageList() {
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public List<Message> getMessageList() {
         return messageList;
     }
 
@@ -71,7 +73,7 @@ public class Chat implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public void setMessageList(Set<Message> messageList) {
+    public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
     }
 
