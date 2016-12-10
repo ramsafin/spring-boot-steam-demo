@@ -49,8 +49,8 @@ public class LoginController {
     //TODO remove from here
     @GetMapping("/")
     public String index(Model model, OpenIDAuthenticationToken authentication) {
-        model.addAttribute("authentication", authentication);
-        return "show";
+//        model.addAttribute("authentication", authentication);
+        return "index";
     }
 
 
