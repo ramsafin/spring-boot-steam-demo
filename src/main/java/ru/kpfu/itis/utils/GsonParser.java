@@ -68,7 +68,7 @@ public class GsonParser {
         List<String> userInfo = new ArrayList<>();
         userInfo.add(obj.get("personaname").getAsString());
         userInfo.add(obj.get("avatar").getAsString());
-        
+
         return userInfo;
     }
 }

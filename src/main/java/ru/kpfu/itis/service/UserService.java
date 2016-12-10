@@ -2,6 +2,7 @@ package ru.kpfu.itis.service;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.entity.Game;
@@ -47,6 +48,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
 
     //parse json to get nickname and avatar url
     private List<String> getSteamUserInfo(User user){
