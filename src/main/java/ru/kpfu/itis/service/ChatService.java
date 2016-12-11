@@ -6,6 +6,7 @@ import ru.kpfu.itis.model.entity.Chat;
 import ru.kpfu.itis.model.entity.Message;
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.ChatRepository;
+import ru.kpfu.itis.repository.MessageRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,11 +17,14 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
 
+    private final MessageRepository messageRepository;
+
     private final UserService userService;
 
     @Autowired
-    public ChatService(ChatRepository chatRepository, UserService userService) {
+    public ChatService(ChatRepository chatRepository, MessageRepository messageRepository, UserService userService) {
         this.chatRepository = chatRepository;
+        this.messageRepository = messageRepository;
         this.userService = userService;
     }
 
@@ -45,6 +49,11 @@ public class ChatService {
     public Chat addMessage(Message message, Chat chat) {
         chat.addMessage(message);
         return chatRepository.save(chat);
+    }
+
+
+    public Message addMessage(Message message) {
+        return messageRepository.save(message);
     }
 
     public List<Chat> findAll(Long userId) {

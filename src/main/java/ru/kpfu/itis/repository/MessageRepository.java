@@ -5,5 +5,4 @@ import ru.kpfu.itis.model.entity.Message;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-
 }

@@ -33,7 +33,6 @@ public class ChatController {
     }
 
 
-
     @GetMapping("/chat/createChat")
     public ResponseEntity<Chat> createChat(@RequestParam Long userId, @RequestParam Long userId2) {
 
@@ -117,13 +116,12 @@ public class ChatController {
 
             User user2 = userService.findOne(userId2);
 
-            return new ResponseEntity<>(chatService.findChat(user1, user2) ,HttpStatus.OK);
+            return new ResponseEntity<>(chatService.findChat(user1, user2), HttpStatus.OK);
 
         } catch (Throwable e) {
             log.error("[Error in 'findChat for 2 users' method]", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
 
