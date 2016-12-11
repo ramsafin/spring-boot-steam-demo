@@ -2,9 +2,9 @@ package ru.kpfu.itis.model.entity;
 
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import org.joda.time.LocalDateTime;
 
 /**
  * Created by root on 08.12.16.
@@ -28,14 +28,15 @@ public class Group {
     public Group() {
     }
 
-    public Group(Long id, String name, String description) {
+    public Group(String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
     @Id
-    @Column(name = "group_id")
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -62,7 +63,7 @@ public class Group {
         this.description = description;
     }
 
-    @Column(name = "owner")
+    @ManyToOne
     public User getOwner() {
         return owner;
     }
@@ -87,5 +88,11 @@ public class Group {
 
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    @PrePersist
+    public void setUpBeforePersist() {
+
+        this.createdTime = org.joda.time.LocalDateTime.now();
     }
 }
