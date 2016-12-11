@@ -49,6 +49,19 @@
 
 	'use strict';
 	
+	/*
+	    Chat
+	       - DialogPreview
+	           - MessageScrollList
+	             - Message
+	             - Message
+	             ...
+	           - MessageForm
+	
+	       - DialogPreview
+	       ...
+	 */
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63,10 +76,6 @@
 	var chats = [{ chatID: 1 }, { chatID: 2 }, { chatID: 3 }];
 	
 	var messages1 = [{ msgId: 1, msg: 'Hello, guy!', sender: 1 }, { msgId: 2, msg: 'Hi!', sender: 2 }, { msgId: 3, msg: 'I need you opinion...', sender: 1 }, { msgId: 4, msg: 'How\' it going?', sender: 1 }];
-	
-	var messages2 = [{ msgId: 5, msg: 'Hello, girl!', sender: 1 }, { msgId: 6, msg: 'Hi=)', sender: 3 }, { msgId: 7, msg: 'I need you opinion...', sender: 1 }, { msgId: 8, msg: 'How\' it going?', sender: 1 }];
-	
-	var messages3 = [{ msgId: 9, msg: 'Hello, guy!', sender: 1 }, { msgId: 10, msg: 'Get out my way! I don\'t give a shit', sender: 12 }, { msgId: 11, msg: 'I need you opinion...', sender: 12 }, { msgId: 12, msg: 'OK (', sender: 1 }];
 	
 	/*
 	 TODO
@@ -131,6 +140,7 @@
 	                React.createElement(
 	                    'p',
 	                    null,
+	                    'Hello ',
 	                    this.props.lastMessage
 	                )
 	            );
@@ -164,6 +174,11 @@
 	            return React.createElement(
 	                'div',
 	                null,
+	                React.createElement(
+	                    'h1',
+	                    null,
+	                    'Hi! 1'
+	                ),
 	                msgView
 	            );
 	        }
@@ -172,8 +187,20 @@
 	    return DialogEntry;
 	}(React.Component);
 	
-	var Message = function (_React$Component4) {
-	    _inherits(Message, _React$Component4);
+	var MessageScrollList = function (_React$Component4) {
+	    _inherits(MessageScrollList, _React$Component4);
+	
+	    function MessageScrollList() {
+	        _classCallCheck(this, MessageScrollList);
+	
+	        return _possibleConstructorReturn(this, (MessageScrollList.__proto__ || Object.getPrototypeOf(MessageScrollList)).apply(this, arguments));
+	    }
+	
+	    return MessageScrollList;
+	}(React.Component);
+	
+	var Message = function (_React$Component5) {
+	    _inherits(Message, _React$Component5);
 	
 	    function Message() {
 	        _classCallCheck(this, Message);

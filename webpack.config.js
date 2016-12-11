@@ -1,11 +1,9 @@
-var path = require('path');
-
-var node_dir = __dirname + '/node_modules';
+let path = require('path');
 
 module.exports = {
     entry: './src/main/js/main.jsx',
-    devtool: 'sourcemaps',
-    cache: true,
+    devtool: 'source-map',
+    cache: false,
     debug: true,
     output: {
         path: __dirname,
@@ -18,7 +16,6 @@ module.exports = {
                 exclude: /(node_modules)/,
                 loader: 'babel-loader',
                 query: {
-                    cacheDirectory: true,
                     presets: ['es2015', 'react']
                 }
             }

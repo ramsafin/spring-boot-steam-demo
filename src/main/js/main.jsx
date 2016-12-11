@@ -1,5 +1,19 @@
 'use strict';
 
+
+/*
+    Chat
+       - DialogPreview
+           - MessageScrollList
+             - Message
+             - Message
+             ...
+           - MessageForm
+
+       - DialogPreview
+       ...
+ */
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 
@@ -14,21 +28,6 @@ let messages1 = [
     {msgId: 2, msg: 'Hi!', sender: 2},
     {msgId: 3, msg: 'I need you opinion...', sender: 1},
     {msgId: 4, msg: 'How\' it going?', sender: 1},
-];
-
-
-let messages2 = [
-    {msgId: 5, msg: 'Hello, girl!', sender: 1},
-    {msgId: 6, msg: 'Hi=)', sender: 3},
-    {msgId: 7, msg: 'I need you opinion...', sender: 1},
-    {msgId: 8, msg: 'How\' it going?', sender: 1},
-];
-
-let messages3 = [
-    {msgId: 9, msg: 'Hello, guy!', sender: 1},
-    {msgId: 10, msg: 'Get out my way! I don\'t give a shit', sender: 12},
-    {msgId: 11, msg: 'I need you opinion...', sender: 12},
-    {msgId: 12, msg: 'OK (', sender: 1},
 ];
 
 /*
@@ -73,7 +72,7 @@ class DialogPreview extends React.Component {
         return (
             <div>
                 <h3>Last message : </h3>
-                <p>{this.props.lastMessage}</p>
+                <p>Hello {this.props.lastMessage}</p>
             </div>
         );
     }
@@ -97,11 +96,19 @@ class DialogEntry extends React.Component {
 
         return (
             <div>
+                <h1>Hi! 1</h1>
                 {msgView}
             </div>
         );
     }
 }
+
+
+class MessageScrollList extends React.Component {
+
+
+}
+
 
 class Message extends React.Component {
 
