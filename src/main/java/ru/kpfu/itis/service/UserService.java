@@ -1,8 +1,9 @@
 package ru.kpfu.itis.service;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.entity.Game;
@@ -13,7 +14,7 @@ import ru.kpfu.itis.repository.SpringUserRepository;
 import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
-import java.nio.charset.Charset;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,31 +34,44 @@ public class UserService {
         this.gameRepository = gameRepository;
     }
 
+//    @Scheduled(fixedDelay = 20000)
+//    private void synchronizeAllUsers() {
+//        List<User> userList = userRepository.findAll();
+//        if (!userList.isEmpty()) {
+//            for (int i = 0; i < userList.size(); i++) {
+//                User user = userList.get(i);
+//                List<String> userInfo = getSteamUserInfo(user);
+//                user.setSteamNickname(userInfo.get(0));
+//                user.setAvatarUrl(userInfo.get(1));
+//                List<Long> gameIdList = createUserGameList(user);
+//                if (gameIdList != null && !gameIdList.isEmpty()) {
+//                    List<Game> gameidList = gameRepository.findAll(gameIdList);
+//                    Set gameSet = new HashSet<Game>(gameidList);
+//                    user.setGamesSet(gameSet);
+//                }
+//                userList.set(i, user);
+//            }
+//            userRepository.save(userList);
+//
+//        }
+//
+//    }   THIS IS TOO SLOOOOOOOOOW!!!
+
     public User saveUser(User user) {
         //find user's info from steam
-        List<String> userInfo = getSteamUserInfo(user);
-        user.setSteamNickname(userInfo.get(0));
-        user.setAvatarUrl(userInfo.get(1));
-        //find user's games
-        List<Long> gameIdList = createUserGameList(user);
-        if (gameIdList!=null && !gameIdList.isEmpty()){
-            List<Game> gameidList = gameRepository.findAll(gameIdList);
-            Set gameSet = new HashSet<Game>(gameidList);
-            user.setGamesSet(gameSet);
-        }
-
+        user = findSteamInfo(user);
         return userRepository.save(user);
     }
 
 
     //parse json to get nickname and avatar url
-    private List<String> getSteamUserInfo(User user){
+    private List<String> getSteamUserInfo(User user) {
         List<String> userInfo = new ArrayList<>();
         String openIdUrl = getOpenId(user);
         try {
-            String userURI = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=C0BE2D2257F40B4AE25E21D6B0A48612&steamids="+ openIdUrl;
+            String userURI = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=C0BE2D2257F40B4AE25E21D6B0A48612&steamids=" + openIdUrl;
             String gameString = new HttpClientGame(userURI).getAll();
-           userInfo = new GsonParser().parseUserInfoList(gameString);
+            userInfo = new GsonParser().parseUserInfoList(gameString);
 
         } catch (ServerException e) {
             e.printStackTrace();
@@ -65,6 +79,7 @@ public class UserService {
 
         return userInfo;
     }
+
 
     private List<Long> createUserGameList(User user) {
         List<Long> gameList = null;
@@ -79,8 +94,30 @@ public class UserService {
         return gameList;
     }
 
-    private String getOpenId(User user){
+    private String getOpenId(User user) {
         String openIdUrl = openIdRepository.findByUser(user).getOpenidUrl();
         return openIdUrl.substring(36);
     }
+
+    public User updateSteamInfo(User user) {
+        user = userRepository.findOne(user.getId());
+        user = findSteamInfo(user);
+        return userRepository.save(user);
+
+    }
+
+    //method for updating user;
+    private User findSteamInfo(User user) {
+        List<String> userInfo = getSteamUserInfo(user);
+        user.setSteamNickname(userInfo.get(0));
+        user.setAvatarUrl(userInfo.get(1));
+        List<Long> gameIdList = createUserGameList(user);
+        if (gameIdList != null && !gameIdList.isEmpty()) {
+            List<Game> gameidList = gameRepository.findAll(gameIdList);
+            Set gameSet = new HashSet<Game>(gameidList);
+            user.setGamesSet(gameSet);
+        }
+        return user;
+    }
+
 }

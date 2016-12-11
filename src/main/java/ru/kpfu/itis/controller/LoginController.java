@@ -25,14 +25,12 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService;
-    private final GameService gameService;
 
 
     @Autowired
-    public LoginController(UserService userService, GameService gameService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
 
-        this.gameService = gameService;
     }
 
     @GetMapping("/login")
@@ -58,6 +56,16 @@ public class LoginController {
     public String index(Model model, OpenIDAuthenticationToken authentication) {
         model.addAttribute("authentication", authentication);
         return "show";
+    }
+
+
+    @GetMapping("/synchronize")
+    public String sync(OpenIDAuthenticationToken authentication) {
+        User user = (User) authentication.getPrincipal();
+        log.error("Update user info...");
+        log.error("id : " + user.getId());
+        userService.updateSteamInfo(user);
+        return "redirect:/";
     }
 
 
