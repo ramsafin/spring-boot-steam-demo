@@ -28,8 +28,6 @@ public class User implements UserDetails{
 
     private Set<Group> groupsList = new HashSet<>();
 
-    private Set<Group> createdGroups = new HashSet<>();
-
     public User() {}
 
     public User(Long id, String fullName, String aboutMe, String telephone) {
@@ -106,15 +104,6 @@ public class User implements UserDetails{
 
     public void setGroupsList(Set<Group> groupsList) {
         this.groupsList = groupsList;
-    }
-
-    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public Set<Group> getCreatedGroups() {
-        return createdGroups;
-    }
-
-    public void setCreatedGroups(Set<Group> createdGroups) {
-        this.createdGroups = createdGroups;
     }
 
     public void addOpenId(UserOpenIds openIds) {
