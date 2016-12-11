@@ -19,8 +19,8 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
-    public Group addGroup(Group group, User user){
-        group.setOwner(user);
+    public Group addGroup(Group group, User owner){
+        group.setOwner(owner);
         return groupRepository.save(group);
     }
 }
