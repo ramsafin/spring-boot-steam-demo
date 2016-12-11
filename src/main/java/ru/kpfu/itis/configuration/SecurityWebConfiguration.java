@@ -28,11 +28,9 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login?fail")
                     .successHandler(authenticationSuccessHandler())
                 .and()
-                .csrf();
+                .csrf().disable();
     }
-
-
-
+    
     @Bean
     public AuthenticationUserDetailsService<OpenIDAuthenticationToken> authenticationUserDetailsService() {
         return new CustomUserDetailsService();
