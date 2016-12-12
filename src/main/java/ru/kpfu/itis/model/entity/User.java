@@ -108,6 +108,10 @@ public class User implements UserDetails{
         this.groupsList = groupsList;
     }
 
+    public void addGroup(Group group){
+        groupsList.add(group);
+    }
+
     @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Group> getCreatedGroups() {
         return createdGroups;

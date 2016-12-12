@@ -92,7 +92,7 @@ public class Group {
 
     @PrePersist
     public void setUpBeforePersist() {
-
         this.createdTime = org.joda.time.LocalDateTime.now();
     }
+
 }

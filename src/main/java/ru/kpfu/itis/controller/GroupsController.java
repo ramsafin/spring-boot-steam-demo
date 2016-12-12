@@ -15,6 +15,7 @@ import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Set;
 
 /**
  * Created by root on 08.12.16.
@@ -50,4 +51,29 @@ public class GroupsController {
         return "redirect:/";
     }
 
+    @GetMapping("/group/{id}")
+    public String groupPageIndex(@PathVariable Long id,ModelMap map, Principal principal){
+        Group group = groupService.findById(id);
+        Set<User> participants = groupService.getPariticipants(group);
+        if(principal != null){
+            User user = userService.findByOpenId((OpenIDAuthenticationToken) principal);
+            if(participants.contains(user)){
+                map.put("subscribed", true);
+            }
+            else{
+                map.put("subscribed", false);
+            }
+        }
+        map.put("group", group);
+        map.put("subscribers", participants);
+        return "group_main_page";
+    }
+
+    @PostMapping("/group/{id}")
+    public String subscribe(@PathVariable Long id,Principal principal){
+        User subscriber = userService.findByOpenId((OpenIDAuthenticationToken) principal);
+        Group group = groupService.findById(id);
+        userService.addGroup(group,subscriber);
+        return "redirect:/group/{id}";
+    }
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <title tiles:fragment="title">Group Page</title>
+</head>
+<body>
+<div tiles:fragment="content">
+
+    <h1 th:text="${group.name}"></h1>
+
+    <!--This user has been subscribed already?-->
+    <!--No-->
+    <div th:if="${subscribed eq false}">
+        <form action="#subscribe" th:object="${group}" method="post">
+            <input type="button" value="Subscribe">
+            <input type="hidden" name="id" th:value="${id}"/>
+        </form>
+    </div>
+    <!--Yes-->
+    <div th:if="${subscribed eq true}">
+        <form action="#unsubscribe" th:object="${group}" method="post">
+            <input type="button", value="Unsubscribe">
+            <input type="hidden" name="id" th:value="${id}"/>
+        </form>
+    </div>
+
+
+    <div tiles:fragment="content">
+
+        <table class="table table-border">
+            <thead>
+            <tr>
+                <th>Participants:</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subscriber : ${subscribers}">
+                <td th:text="${subscriber.fullName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
