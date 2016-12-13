@@ -76,4 +76,12 @@ public class GroupsController {
         userService.addGroup(group,subscriber);
         return "redirect:/group/{id}";
     }
+
+    @DeleteMapping("/group/{id}")
+    public String unsubscribe(@PathVariable Long id, Principal principal){
+        User subscriber = userService.findByOpenId((OpenIDAuthenticationToken) principal);
+        Group group = groupService.findById(id);
+        userService.unsubscribeFromGroup(group,subscriber);
+        return "redirect:/group/{id}";
+    }
 }

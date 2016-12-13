@@ -112,6 +112,10 @@ public class User implements UserDetails{
         groupsList.add(group);
     }
 
+    public void deleteGroup(Group group){
+        groupsList.remove(group);
+    }
+
     @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Group> getCreatedGroups() {
         return createdGroups;

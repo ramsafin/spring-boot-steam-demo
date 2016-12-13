@@ -11,15 +11,16 @@
     <!--This user has been subscribed already?-->
     <!--No-->
     <div th:if="${subscribed eq false}">
-        <form action="#subscribe" th:object="${group}" method="post">
-            <input type="button" value="Subscribe">
+        <form action="#" th:object="${group}" method="post">
+            <input type="submit" value="Subscribe" />
             <input type="hidden" name="id" th:value="${id}"/>
         </form>
     </div>
     <!--Yes-->
     <div th:if="${subscribed eq true}">
-        <form action="#unsubscribe" th:object="${group}" method="post">
-            <input type="button", value="Unsubscribe">
+        <form action="#" th:object="${group}" method="post">
+            <input type="submit" value="Unsubscribe"/>
+            <input type="hidden" name="_method" value="delete"/>
             <input type="hidden" name="id" th:value="${id}"/>
         </form>
     </div>

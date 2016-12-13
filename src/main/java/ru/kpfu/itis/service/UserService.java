@@ -33,4 +33,9 @@ public class UserService {
         user.addGroup(group);
         userRepository.save(user);
     }
+
+    public void unsubscribeFromGroup(Group group, User user){
+        user.deleteGroup(group);
+        userRepository.save(user);
+    }
 }
