@@ -8,26 +8,63 @@
 
     <h1 th:text="${group.name}"></h1>
 
-    <!--This user has been subscribed already?-->
-    <!--No-->
-    <div th:if="${subscribed eq false}">
-        <form action="#" th:object="${group}" method="post">
-            <input type="submit" value="Subscribe" />
+    <div th:if="${isAdmin eq true}">
+        <form th:action="@{/group/{groupId}/new_post(groupId=${group.id})}" th:object="${post}" method="post">
+            <table>
+                <tr>
+                    <td>Title:</td>
+                    <td><input type="text" th:field="*{title}"/></td>
+                    <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
+                </tr>
+
+                <tr>
+                    <td>Information:</td>
+                    <td><input type="text" th:field="*{body}"/></td>
+                    <td th:if="${#fields.hasErrors('body')}" th:errors="*{body}">Description Error</td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit">Post</button>
+                    </td>
+                </tr>
+            </table>
             <input type="hidden" name="id" th:value="${id}"/>
         </form>
     </div>
-    <!--Yes-->
-    <div th:if="${subscribed eq true}">
-        <form action="#" th:object="${group}" method="post">
-            <input type="submit" value="Unsubscribe"/>
-            <input type="hidden" name="_method" value="delete"/>
-            <input type="hidden" name="id" th:value="${id}"/>
-        </form>
+
+    <div th:if="${isAdmin eq false}">
+        <!--This user has been subscribed already?-->
+        <!--No-->
+        <div th:if="${subscribed eq false}">
+            <a th:href="@{/group/{groupId}/subscribe(groupId=${group.id})}"><button type="submit">Subscribe</button></a>
+        </div>
+        <!--Yes-->
+        <div th:if="${subscribed eq true}">
+            <a th:href="@{/group/{groupId}/unsubscribe(groupId=${group.id})}"><button type="submit">Unsubscribe</button></a>
+        </div>
     </div>
 
+    <h2>Posts:</h2>
+    <div class="container">
+        <div tiles:fragment="contetnt">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>Title:</th>
+                    <th>Body:</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.title}"></td>
+                    <td th:text="${post.body}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <div tiles:fragment="content">
-
+    <div style="float: right;" tiles:fragment="content">
         <table class="table table-border">
             <thead>
             <tr>
@@ -41,7 +78,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 </body>
 </html>

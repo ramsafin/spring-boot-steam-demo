@@ -4,6 +4,8 @@ package ru.kpfu.itis.model.entity;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import javafx.geometry.Pos;
 import org.joda.time.LocalDateTime;
 
 /**
@@ -23,6 +25,8 @@ public class Group {
 
     private Set<User> participantList = new HashSet<>();
 
+    private Set<Post> posts = new HashSet<>();
+
     private LocalDateTime createdTime;
 
     public Group() {
@@ -35,7 +39,6 @@ public class Group {
     }
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
@@ -79,6 +82,15 @@ public class Group {
 
     public void setParticipantList(Set<User> participantList) {
         this.participantList = participantList;
+    }
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
     }
 
     @Column(name = "created_at")
