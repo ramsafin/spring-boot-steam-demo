@@ -17,4 +17,9 @@ public interface SpringGroupRepository extends JpaRepository<Group, Long>{
             "inner join u.groupsList g " +
             "where g.id = :groupid")
     Set<User> findGroupParticipants(@Param("groupid") Long groupid);
+
+    @Query(value = "select g from Group g " +
+            "inner join g.participantList u " +
+            "where u.id = :userid")
+    Set<Group> findUsersGroups(@Param("userid") Long id);
 }

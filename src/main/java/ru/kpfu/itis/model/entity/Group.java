@@ -84,6 +84,14 @@ public class Group {
         this.participantList = participantList;
     }
 
+    public void addParticipant(User user){
+        participantList.add(user);
+    }
+
+    public void deleteParticipant(User user){
+        participantList.remove(user);
+    }
+
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Post> getPosts() {
         return posts;

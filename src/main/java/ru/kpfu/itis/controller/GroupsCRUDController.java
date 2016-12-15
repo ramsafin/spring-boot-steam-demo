@@ -46,7 +46,7 @@ public class GroupsCRUDController {
             return "new_group_form";
         }
         groupService.addGroup(new Group(group.getName(),group.getDescription()), owner);
-        return "redirect:/";
+        return "redirect:/group/{id}";
     }
 
 

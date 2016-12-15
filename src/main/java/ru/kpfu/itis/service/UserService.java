@@ -30,11 +30,13 @@ public class UserService {
     }
 
     public void addGroup(Group group, User user){
+        group.addParticipant(user);
         user.addGroup(group);
         userRepository.save(user);
     }
 
     public void unsubscribeFromGroup(Group group, User user){
+        group.deleteParticipant(user);
         user.deleteGroup(group);
         userRepository.save(user);
     }

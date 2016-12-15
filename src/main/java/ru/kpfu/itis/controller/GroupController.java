@@ -41,6 +41,7 @@ public class GroupController {
         Set<Post> posts = postService.getGroupPosts(group);
         if(principal != null){
             User user = userService.findByOpenId((OpenIDAuthenticationToken) principal);
+            Set<Group> userGroups = groupService.findUsersGroups(user);
             if(participants.contains(user)){
                 map.put("subscribed", true);
             }

@@ -35,4 +35,8 @@ public class GroupService {
         Set<User> pariticipants = groupRepository.findGroupParticipants(group.getId());
         return pariticipants;
     }
+
+    public Set<Group> findUsersGroups(User user){
+        return groupRepository.findUsersGroups(user.getId());
+    }
 }
