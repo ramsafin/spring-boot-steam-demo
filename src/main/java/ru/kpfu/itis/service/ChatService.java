@@ -1,5 +1,6 @@
 package ru.kpfu.itis.service;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.model.entity.Chat;
@@ -10,7 +11,7 @@ import ru.kpfu.itis.repository.MessageRepository;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ChatService {
@@ -34,9 +35,7 @@ public class ChatService {
     }
 
     public Chat findChat(Long id) {
-        Chat chat = chatRepository.findOne(id);
-        chat.setMessageList(chat.getMessageList().stream().distinct().collect(Collectors.toList()));
-        return chat;
+        return chatRepository.findOne(id);
     }
 
     public Chat findChat(final User user, final User user2) {
@@ -48,7 +47,12 @@ public class ChatService {
 
     public Chat addMessage(Message message, Chat chat) {
         chat.addMessage(message);
+        chat.setUpdatedAt(LocalDateTime.now()); //update time
         return chatRepository.save(chat);
+    }
+
+    public Optional<Message> findLastMessage(Long chatId) {
+        return messageRepository.findTop1ByChatIdOrderBySentAtDesc(chatId);
     }
 
 

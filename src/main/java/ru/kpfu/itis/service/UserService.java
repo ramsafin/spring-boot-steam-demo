@@ -30,4 +30,12 @@ public class UserService {
         return findOne(userId).getChatList();
     }
 
+    public User findUserByToken(String token) {
+        return userRepository.findByOpenid(token);
+    }
+
+    public User findUserByFullName(String fullName) {
+        return userRepository.findByFullName(fullName);
+    }
+
 }

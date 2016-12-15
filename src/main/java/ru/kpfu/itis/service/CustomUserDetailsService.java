@@ -12,8 +12,6 @@ import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.model.entity.UserOpenIds;
 import ru.kpfu.itis.repository.SpringUserRepository;
 
-import java.util.Optional;
-
 @Service
 public class CustomUserDetailsService implements AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
@@ -34,9 +32,9 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
         try {
             log.error("Finding user by token " + token.getName());
 
-            Optional<User> user = springUserRepository.findByOpenid(token.getName());
+            User user = springUserRepository.findByOpenid(token.getName());
 
-            if (user.isPresent()) return user.get();
+            if (user != null) return user;
 
             throw new UsernameNotFoundException("User is no found");
 

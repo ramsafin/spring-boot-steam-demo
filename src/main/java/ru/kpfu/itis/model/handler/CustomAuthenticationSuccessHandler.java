@@ -18,13 +18,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-
-        log.error("[authentication success]");
-
         //get user
         User user = (User) authentication.getPrincipal();
-
-        log.error("[Auth.getPrincipal()]");
 
         if (user == null) {
             log.error("[User is null)]");
@@ -34,15 +29,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         //check if user is new
         if (user.getFullName() == null) {
-            log.error("[user us new, id = " + user.getId() + "]");
             log.error("[redirect to '/login/continue/{id}']");
             //new user, redirect him to new form
             response.sendRedirect(String.format("/login/continue/%d", user.getId()));
             return;
         }
 
-        log.error("[user is exists redirect him to home page]");
-        log.error("[redirect to '/']");
+        String refer = request.getHeader("referer");
+
+        if (refer != null) {
+            response.sendRedirect(refer);
+        }
+
         response.sendRedirect("/");
+
     }
 }

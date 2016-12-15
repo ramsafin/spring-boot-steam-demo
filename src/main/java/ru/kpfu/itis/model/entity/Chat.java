@@ -6,8 +6,6 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +18,7 @@ public class Chat implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    private List<Message> messageList = new LinkedList<>();
+    private Set<Message> messageSet = new HashSet<>();
 
     private Set<User> userSet = new HashSet<>();
 
@@ -51,8 +49,8 @@ public class Chat implements Serializable {
     }
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<Message> getMessageList() {
-        return messageList;
+    public Set<Message> getMessageSet() {
+        return messageSet;
     }
 
 
@@ -73,8 +71,8 @@ public class Chat implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public void setMessageList(List<Message> messageList) {
-        this.messageList = messageList;
+    public void setMessageSet(Set<Message> messageSet) {
+        this.messageSet = messageSet;
     }
 
     public void setUserSet(Set<User> userSet) {
@@ -83,7 +81,15 @@ public class Chat implements Serializable {
 
     public void addMessage(Message message) {
         message.setChat(this);
-        this.messageList.add(message);
+        this.messageSet.add(message);
+    }
+
+    @Transient
+    public Message getLastMessage() {
+        if (messageSet.isEmpty()) return null;
+
+        return messageSet.stream().sorted((m1, m2) -> m2.getSentAt()
+                .compareTo(m1.getSentAt())).findFirst().get();
     }
 
     @Override

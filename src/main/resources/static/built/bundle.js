@@ -49,19 +49,6 @@
 
 	'use strict';
 	
-	/*
-	    Chat
-	       - DialogPreview
-	           - MessageScrollList
-	             - Message
-	             - Message
-	             ...
-	           - MessageForm
-	
-	       - DialogPreview
-	       ...
-	 */
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73,16 +60,7 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	
-	var chats = [{ chatID: 1 }, { chatID: 2 }, { chatID: 3 }];
-	
-	var messages1 = [{ msgId: 1, msg: 'Hello, guy!', sender: 1 }, { msgId: 2, msg: 'Hi!', sender: 2 }, { msgId: 3, msg: 'I need you opinion...', sender: 1 }, { msgId: 4, msg: 'How\' it going?', sender: 1 }];
-	
-	/*
-	 TODO
-	 - where to save messages
-	 - make links and their handlers (open dialog, back to dialogs)
-	 - Socket, !Important
-	 */
+	var apiURL = '/api/chat/';
 	
 	var Chat = function (_React$Component) {
 	    _inherits(Chat, _React$Component);
@@ -93,23 +71,142 @@
 	        var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
 	
 	        _this.state = {
-	            chats: chats
+	            messages: [],
+	            chatId: ''
 	        };
+	
+	        _this.fetchMessages = _this.fetchMessages.bind(_this);
+	        _this.onMessageFormSubmitHandler = _this.onMessageFormSubmitHandler.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(Chat, [{
+	        key: 'onMessageFormSubmitHandler',
+	        value: function onMessageFormSubmitHandler(e, callback, msg) {
+	            var _this2 = this;
+	
+	            console.log('message submit handler');
+	
+	            var message = {
+	                chatId: this.state.chatId,
+	                sender: this.state.meName,
+	                msg: msg
+	            };
+	
+	            console.log('message to be send : ' + JSON.stringify(message));
+	
+	            fetch(apiURL + 'addMessage', {
+	                method: 'POST',
+	                body: JSON.stringify(message, ['chatId', 'sender', 'msg'])
+	            }).then(function (resp) {
+	                return resp.json();
+	            }).then(function (json) {
+	
+	                console.log('addMessage has been accomplished');
+	
+	                var message = {
+	                    id: json.id,
+	                    date: json.date,
+	                    sender: json.sender,
+	                    text: json.msg
+	                };
+	
+	                console.log('message from server: ' + JSON.stringify(message));
+	
+	                var messages = _this2.state.messages;
+	
+	                messages.push(message);
+	
+	                _this2.state.setState({ messages: messages });
+	
+	                callback(e, true);
+	            }).catch(function (err) {
+	                console.error(err);
+	                callback(e, false);
+	            });
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this3 = this;
+	
+	            console.log('loading messages for chat ...');
+	
+	            fetch(apiURL + 'getChatId').then(function (resp) {
+	                return resp.text();
+	            }).then(function (chat) {
+	                console.log('chat id is ' + chat);
+	
+	                _this3.setState({ chatId: chat });
+	
+	                _this3.fetchMessages(_this3.state.chatId);
+	
+	                _this3.apiInterval = setInterval(function () {
+	                    console.log('loading messages, 2000 ms');
+	                    _this3.fetchMessages(_this3.state.chatId);
+	                }, 30 * 1000); //milliseconds
+	            }).catch(function (err) {
+	                console.error(err);
+	            });
+	        }
+	    }, {
+	        key: 'fetchMessages',
+	        value: function fetchMessages(chatId) {
+	            var _this4 = this;
+	
+	            console.log('fetching messages ...');
+	
+	            fetch(apiURL + chatId).then(function (resp) {
+	                return resp.json();
+	            }).then(function (json) {
+	
+	                console.log('messages have been received');
+	
+	                _this4.setState({
+	                    me: json.meId,
+	                    meName: json.meName,
+	                    userId: json.userId,
+	                    userName: json.userName,
+	                    messages: json.messages.map(function (m) {
+	                        return {
+	                            id: m.id,
+	                            date: m.date,
+	                            text: m.msg,
+	                            sender: m.sender
+	                        };
+	                    })
+	                });
+	            }).catch(function (err) {
+	                console.error(err);
+	            });
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            console.log('clear interval');
+	            clearInterval(this.apiInterval);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	
-	            var previews = this.state.chats.map(function (chat) {
-	                return React.createElement(DialogPreview, { key: chat.chatID, lastMessage: chat.chatID });
-	            });
-	
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(DialogEntry, null)
+	                !this.state.messages || this.state.messages.length === 0 ? React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        'There is no messages yet'
+	                    ),
+	                    React.createElement(MessageForm, { onMessageFormSubmit: this.onMessageFormSubmitHandler })
+	                ) : React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(MessageScrollList, { messages: this.state.messages }),
+	                    React.createElement(MessageForm, { onMessageFormSubmit: this.onMessageFormSubmitHandler })
+	                )
 	            );
 	        }
 	    }]);
@@ -117,90 +214,96 @@
 	    return Chat;
 	}(React.Component);
 	
-	var DialogPreview = function (_React$Component2) {
-	    _inherits(DialogPreview, _React$Component2);
+	var MessageScrollList = function (_React$Component2) {
+	    _inherits(MessageScrollList, _React$Component2);
 	
-	    function DialogPreview(props) {
-	        _classCallCheck(this, DialogPreview);
+	    function MessageScrollList(props) {
+	        _classCallCheck(this, MessageScrollList);
 	
-	        return _possibleConstructorReturn(this, (DialogPreview.__proto__ || Object.getPrototypeOf(DialogPreview)).call(this, props));
+	        return _possibleConstructorReturn(this, (MessageScrollList.__proto__ || Object.getPrototypeOf(MessageScrollList)).call(this, props));
 	    }
 	
-	    _createClass(DialogPreview, [{
+	    _createClass(MessageScrollList, [{
 	        key: 'render',
 	        value: function render() {
+	
 	            return React.createElement(
 	                'div',
-	                null,
+	                { className: 'scrollMessage' },
 	                React.createElement(
-	                    'h3',
-	                    null,
-	                    'Last message : '
-	                ),
-	                React.createElement(
-	                    'p',
-	                    null,
-	                    'Hello ',
-	                    this.props.lastMessage
+	                    'ul',
+	                    { className: 'messageList' },
+	                    !this.props.messages ? React.createElement(
+	                        'h3',
+	                        null,
+	                        'There is no messages yet...'
+	                    ) : this.props.messages.map(function (m) {
+	                        return React.createElement(Message, { key: m.id, message: m });
+	                    })
 	                )
 	            );
 	        }
 	    }]);
 	
-	    return DialogPreview;
+	    return MessageScrollList;
 	}(React.Component);
 	
-	var DialogEntry = function (_React$Component3) {
-	    _inherits(DialogEntry, _React$Component3);
+	var MessageForm = function (_React$Component3) {
+	    _inherits(MessageForm, _React$Component3);
 	
-	    function DialogEntry(props) {
-	        _classCallCheck(this, DialogEntry);
+	    function MessageForm(props) {
+	        _classCallCheck(this, MessageForm);
 	
-	        var _this3 = _possibleConstructorReturn(this, (DialogEntry.__proto__ || Object.getPrototypeOf(DialogEntry)).call(this, props));
+	        var _this6 = _possibleConstructorReturn(this, (MessageForm.__proto__ || Object.getPrototypeOf(MessageForm)).call(this, props));
 	
-	        _this3.state = {
-	            messages: messages1
+	        _this6.state = {
+	            message: ''
 	        };
-	        return _this3;
+	        _this6.onInputChange = _this6.onInputChange.bind(_this6);
+	        _this6.onFormSubmitCallback = _this6.onFormSubmitCallback.bind(_this6);
+	        _this6.onFormSubmit = _this6.onFormSubmit.bind(_this6);
+	        return _this6;
 	    }
 	
-	    _createClass(DialogEntry, [{
+	    _createClass(MessageForm, [{
+	        key: 'onInputChange',
+	        value: function onInputChange(e) {
+	            this.setState({ message: e.target.value });
+	        }
+	    }, {
+	        key: 'onFormSubmitCallback',
+	        value: function onFormSubmitCallback(e, status) {
+	            console.log('form submit callback');
+	            status === true ? e.target.reset() : console.error('can\'t send message');
+	        }
+	    }, {
+	        key: 'onFormSubmit',
+	        value: function onFormSubmit(e) {
+	            e.preventDefault();
+	            console.log('form has been submitted');
+	            this.props.onMessageFormSubmit(e, this.onFormSubmitCallback, this.state.message);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var msgView = this.state.messages.map(function (m) {
-	                return React.createElement(Message, { key: m.msgId, msg: m.msg });
-	            });
-	
 	            return React.createElement(
-	                'div',
-	                null,
+	                'form',
+	                { onSubmit: this.onFormSubmit },
+	                React.createElement('textarea', { onChange: this.onInputChange, placeholder: 'Enter your message here...' }),
 	                React.createElement(
-	                    'h1',
-	                    null,
-	                    'Hi! 1'
-	                ),
-	                msgView
+	                    'button',
+	                    { type: 'submit' },
+	                    'Send message'
+	                )
 	            );
 	        }
 	    }]);
 	
-	    return DialogEntry;
+	    return MessageForm;
 	}(React.Component);
 	
-	var MessageScrollList = function (_React$Component4) {
-	    _inherits(MessageScrollList, _React$Component4);
-	
-	    function MessageScrollList() {
-	        _classCallCheck(this, MessageScrollList);
-	
-	        return _possibleConstructorReturn(this, (MessageScrollList.__proto__ || Object.getPrototypeOf(MessageScrollList)).apply(this, arguments));
-	    }
-	
-	    return MessageScrollList;
-	}(React.Component);
-	
-	var Message = function (_React$Component5) {
-	    _inherits(Message, _React$Component5);
+	var Message = function (_React$Component4) {
+	    _inherits(Message, _React$Component4);
 	
 	    function Message() {
 	        _classCallCheck(this, Message);
@@ -212,9 +315,32 @@
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement(
-	                'div',
+	                'li',
 	                null,
-	                this.props.msg
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'id : ',
+	                    this.props.message.id
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'at : ',
+	                    this.props.message.date
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'message : ',
+	                    this.props.message.text
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'by : ',
+	                    this.props.message.sender
+	                )
 	            );
 	        }
 	    }]);

@@ -3,34 +3,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
 <head>
     <title tiles:fragment="title">Show : Index</title>
-    <!-- /Simple OpenID Selector -->
-    <!--<link rel="stylesheet" th:href="@{/resources/css/openid.css}" />-->
 </head>
 <body>
 <div tiles:fragment="content">
-    <h1>User Attributes</h1>
-    <table class="table table-border">
-        <thead>
-        <tr>
-            <th>Attribute Name</th>
-            <th>Attribute Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>ID</td>
-            <td th:text="${authentication.identityUrl}"></td>
-        </tr>
-        <tr th:each="attribute : ${authentication.attributes}">
-            <td th:text="${attribute.name}">Attribute Name</td>
-            <td>
-                <dl th:each="value : ${attribute.values}">
-                    <dd th:text="${value}">Attribute Value</dd>
-                </dl>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <h1>Show page</h1>
 </div>
 </body>
 </html>

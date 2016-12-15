@@ -1,7 +1,6 @@
 package ru.kpfu.itis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.inject.internal.Objects;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -92,6 +91,7 @@ public class Message implements Serializable {
 
         Message message = (Message) o;
 
+        if (id != null ? !id.equals(message.id) : message.id != null) return false;
         if (chat != null ? !chat.equals(message.chat) : message.chat != null) return false;
         if (sender != null ? !sender.equals(message.sender) : message.sender != null) return false;
         if (messageText != null ? !messageText.equals(message.messageText) : message.messageText != null) return false;
@@ -100,8 +100,11 @@ public class Message implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(chat, sender, messageText, sentAt);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (chat != null ? chat.hashCode() : 0);
+        result = 31 * result + (sender != null ? sender.hashCode() : 0);
+        result = 31 * result + (messageText != null ? messageText.hashCode() : 0);
+        result = 31 * result + (sentAt != null ? sentAt.hashCode() : 0);
+        return result;
     }
-
-
 }

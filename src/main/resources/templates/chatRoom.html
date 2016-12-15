@@ -3,13 +3,21 @@
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>ReactJS + Spring Data REST</title>
-    <link rel="stylesheet" th:href="@{/main.css}" />
+    <style>
+        .messageList {
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
 
+<p th:text="${chatRoom}"></p>
+
+<p>Hello=)!</p>
+
 <div id="content"></div>
 
-<script src="built/bundle.js"></script>
+<script th:src="@{/built/bundle.js}"></script>
 
 </body>
 </html>
