@@ -1,53 +1,78 @@
 package ru.kpfu.itis.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.kpfu.itis.model.entity.Chat;
+import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.service.ChatService;
 import ru.kpfu.itis.service.UserService;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.List;
 
-@RestController
+@Controller
 public class ChatController {
 
-    private final ChatService chatService;
+    private static final Logger log = LoggerFactory.getLogger(ChatController.class);
 
     private final UserService userService;
 
+    private final ChatService chatService;
+
+    @Lazy
     @Autowired
-    public ChatController(ChatService chatService, UserService userService) {
-        this.chatService = chatService;
+    public ChatController(UserService userService, ChatService chatService) {
         this.userService = userService;
+        this.chatService = chatService;
     }
 
-    @RequestMapping("/chat/createChat")
-    public ResponseEntity<Chat> createChat(@RequestParam Long id, @RequestParam Long id2) {
+    @GetMapping("/chat")
+    public String chat(Principal principal, ModelMap modelMap) {
 
-        Chat chat = new Chat();
+        log.error("[Chat request]");
 
-        try {
-            chat.setUserSet(new HashSet<>(Arrays.asList(
-                    userService.findOne(id),
-                    userService.findOne(id2)
-            )));
+        User user;
 
-        } catch (Throwable e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        //TODO if principal is null then get user with id = 2
+        if (principal == null) {
+
+            log.error("user is anonymous");
+            user = userService.findOne(2L); //delete this in production
+
+        } else {
+            log.error("Found user " + principal.getName());
+            user = userService.findUserByToken(principal.getName());
         }
 
-        return new ResponseEntity<>(chatService.createChat(chat), HttpStatus.CREATED);
+        List<Chat> chatList = chatService.findAll(user.getId());
+
+        if (chatList == null || chatList.size() == 0) {
+            chatList = Collections.emptyList();
+        }
+
+        modelMap.addAttribute("chats", chatList);
+
+        return "chat";
     }
 
 
-    @RequestMapping("/chat/addMessage/${chatId}")
-    public ResponseEntity<Chat> addMessage(@PathVariable Long chatId, @RequestParam("sender") Long senderId) {
-
+    @GetMapping("/chat/{chatId}")
+    public String chatRoom(@PathVariable Long chatId, ModelMap modelMap, Principal principal, HttpServletResponse resp) {
+        log.error("[chat room ], room id " + chatId);
+        if (principal != null) {
+            resp.addCookie(new Cookie("user", principal.getName()));
+        }
+        modelMap.addAttribute("chatRoom", chatId);
+        return "chatRoom";
     }
-
-
 
 }

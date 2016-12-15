@@ -1,26 +1,32 @@
 package ru.kpfu.itis.service;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.model.entity.Chat;
 import ru.kpfu.itis.model.entity.Message;
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.ChatRepository;
+import ru.kpfu.itis.repository.MessageRepository;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChatService {
 
     private final ChatRepository chatRepository;
 
+    private final MessageRepository messageRepository;
+
+    private final UserService userService;
+
     @Autowired
-    public ChatService(ChatRepository chatRepository) {
+    public ChatService(ChatRepository chatRepository, MessageRepository messageRepository, UserService userService) {
         this.chatRepository = chatRepository;
+        this.messageRepository = messageRepository;
+        this.userService = userService;
     }
 
     public Chat createChat(Chat chat) {
@@ -28,22 +34,34 @@ public class ChatService {
         return chatRepository.save(chat);
     }
 
-    public Chat findChat(User user, User user2) {
-        Chat chatProbe = new Chat(new HashSet<>(Arrays.asList(user, user2)));
-        return chatRepository.findOne(Example.of(chatProbe,
-                ExampleMatcher.matching()
-                .withIgnorePaths("id", "createdAt", "updatedAt")
-        ));
+    public Chat findChat(Long id) {
+        return chatRepository.findOne(id);
     }
 
-    public void addMessage(Message message, Chat chat) {
+    public Chat findChat(final User user, final User user2) {
+        List<Chat> chats = userService.findAllChats(user.getId());
+        if (chats == null) return null;
+        return chats.stream().filter(chat -> chat.getUserSet()
+                .containsAll(Arrays.asList(user, user2))).findFirst().get();
+    }
+
+    public Chat addMessage(Message message, Chat chat) {
         chat.addMessage(message);
-        chatRepository.save(chat);
+        chat.setUpdatedAt(LocalDateTime.now()); //update time
+        return chatRepository.save(chat);
     }
 
-    public List<Chat> findAll() {
-        return chatRepository.findAll();
+    public Optional<Message> findLastMessage(Long chatId) {
+        return messageRepository.findTop1ByChatIdOrderBySentAtDesc(chatId);
     }
 
+
+    public Message addMessage(Message message) {
+        return messageRepository.save(message);
+    }
+
+    public List<Chat> findAll(Long userId) {
+        return userService.findAllChats(userId);
+    }
 
 }

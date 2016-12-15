@@ -18,9 +18,9 @@ public class Chat implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    private Set<Message> messageList = new HashSet<>();
+    private Set<Message> messageSet = new HashSet<>();
 
-    private Set<User> userSet;
+    private Set<User> userSet = new HashSet<>();
 
     public Chat() {
         this.createdAt = LocalDateTime.now();
@@ -48,9 +48,9 @@ public class Chat implements Serializable {
         return updatedAt;
     }
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
-    public Set<Message> getMessageList() {
-        return messageList;
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public Set<Message> getMessageSet() {
+        return messageSet;
     }
 
 
@@ -71,8 +71,8 @@ public class Chat implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public void setMessageList(Set<Message> messageList) {
-        this.messageList = messageList;
+    public void setMessageSet(Set<Message> messageSet) {
+        this.messageSet = messageSet;
     }
 
     public void setUserSet(Set<User> userSet) {
@@ -81,7 +81,15 @@ public class Chat implements Serializable {
 
     public void addMessage(Message message) {
         message.setChat(this);
-        this.messageList.add(message);
+        this.messageSet.add(message);
+    }
+
+    @Transient
+    public Message getLastMessage() {
+        if (messageSet.isEmpty()) return null;
+
+        return messageSet.stream().sorted((m1, m2) -> m2.getSentAt()
+                .compareTo(m1.getSentAt())).findFirst().get();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ru.kpfu.itis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.inject.internal.Objects;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -13,10 +12,8 @@ public class Message implements Serializable {
 
     private Long id;
 
-    @JsonIgnore
     private Chat chat;
 
-    @JsonIgnore
     private User sender;
 
     private String messageText;
@@ -27,10 +24,16 @@ public class Message implements Serializable {
         this.sentAt = LocalDateTime.now();
     }
 
-    public Message(User sender, String messageText) {
+
+    public Message(Chat chat, User sender, String messageText) {
         this();
+        this.chat = chat;
         this.sender = sender;
         this.messageText = messageText;
+    }
+
+    public Message(User sender, String messageText) {
+        this(null, sender, messageText);
     }
 
     @Id
@@ -39,11 +42,13 @@ public class Message implements Serializable {
         return id;
     }
 
+    @JsonIgnore
     @ManyToOne
     public Chat getChat() {
         return chat;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     public User getSender() {
         return sender;
@@ -86,6 +91,7 @@ public class Message implements Serializable {
 
         Message message = (Message) o;
 
+        if (id != null ? !id.equals(message.id) : message.id != null) return false;
         if (chat != null ? !chat.equals(message.chat) : message.chat != null) return false;
         if (sender != null ? !sender.equals(message.sender) : message.sender != null) return false;
         if (messageText != null ? !messageText.equals(message.messageText) : message.messageText != null) return false;
@@ -94,8 +100,11 @@ public class Message implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(chat, sender, messageText, sentAt);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (chat != null ? chat.hashCode() : 0);
+        result = 31 * result + (sender != null ? sender.hashCode() : 0);
+        result = 31 * result + (messageText != null ? messageText.hashCode() : 0);
+        result = 31 * result + (sentAt != null ? sentAt.hashCode() : 0);
+        return result;
     }
-
-
 }
