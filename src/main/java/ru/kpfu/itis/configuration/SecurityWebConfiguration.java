@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import ru.kpfu.itis.model.handler.CustomAuthenticationSuccessHandler;
 import ru.kpfu.itis.service.CustomUserDetailsService;
 
+import javax.servlet.FilterRegistration;
+
 @EnableWebSecurity
 public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -28,10 +30,8 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login?fail")
                     .successHandler(authenticationSuccessHandler())
                 .and()
-                .csrf();
+                .csrf().disable();
     }
-
-
 
     @Bean
     public AuthenticationUserDetailsService<OpenIDAuthenticationToken> authenticationUserDetailsService() {
@@ -42,5 +42,4 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
     }
-
 }

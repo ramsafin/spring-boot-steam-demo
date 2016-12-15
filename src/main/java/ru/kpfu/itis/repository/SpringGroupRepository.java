@@ -6,12 +6,15 @@ import org.springframework.data.repository.query.Param;
 import ru.kpfu.itis.model.entity.Group;
 import ru.kpfu.itis.model.entity.User;
 
-import java.util.Optional;
 import java.util.Set;
 
-public interface SpringUserRepository extends JpaRepository<User, Long> {
+/**
+ * Created by root on 08.12.16.
+ */
+public interface SpringGroupRepository extends JpaRepository<Group, Long>{
 
-
-    @Query(value = "select u from User u JOIN u.userOpenIdsSet o WHERE o.openidUrl = :openid")
-    Optional<User> findByOpenid(@Param("openid") String openid);
+    @Query(value = "select u from User u " +
+            "inner join u.groupsList g " +
+            "where g.id = :groupid")
+    Set<User> findGroupParticipants(@Param("groupid") Long groupid);
 }
