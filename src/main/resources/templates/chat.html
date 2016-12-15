@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User : chats</title>
+</head>
+<body>
+    <div>
+        <h1>Chat list</h1>
+
+        <div class="chat">
+
+            <div th:each="chat : ${chats}">
+                <p><a th:href="@{/chat/{chat_id}(chat_id=${chat.id})}">Link to chat</a></p>
+                <h3 th:text="${chat.id}"></h3>
+                <p th:text="${chat.createdAt}"></p>
+                <p th:text="${chat.updatedAt}"></p>
+
+                <ul>
+                    <li th:each="user : ${chat.userSet}">
+                        <p>User : <span th:text="${user.fullName}"></span></p>
+                    </li>
+                </ul>
+
+                <p>Last message : <span th:if="${chat.getLastMessage() != null}" th:text="${chat.getLastMessage().messageText}"></span></p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

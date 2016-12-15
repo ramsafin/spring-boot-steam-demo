@@ -3,7 +3,7 @@ package ru.kpfu.itis.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.openid.OpenIDAuthenticationToken;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,7 +25,6 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService;
-
 
     @Autowired
     public LoginController(UserService userService) {
@@ -50,15 +49,6 @@ public class LoginController {
         return "login";
     }
 
-
-    //TODO remove from here
-    @GetMapping("/")
-    public String index(Model model, OpenIDAuthenticationToken authentication) {
-        model.addAttribute("authentication", authentication);
-        return "show";
-    }
-
-
     @GetMapping("/synchronize")
     public String sync(OpenIDAuthenticationToken authentication) {
         User user = (User) authentication.getPrincipal();
@@ -72,17 +62,12 @@ public class LoginController {
     @GetMapping("/login/continue/{id}")
     public String continueLogin(@PathVariable Long id, Principal principal, ModelMap model) {
 
-        log.error("continue controller");
-        log.error("Principal : " + principal);
-
         if (principal != null && id != null) {
-            log.error("Add userDTO and id to model");
             model.addAttribute("user", new UserDTO()); //add user to the form
             model.addAttribute("id", id);
             return "login-continue";
         }
 
-        log.error("[redirect to /, user there is no continue for authorized user]");
         return "redirect:/";
     }
 
@@ -93,24 +78,12 @@ public class LoginController {
             Principal principal, @RequestParam("id") Long id
     ) {
 
-        log.error("perform login controller");
-
-        log.error("id : " + id);
-
         if (principal != null) {
 
-            if (principal instanceof User) {
-                log.error("[principal is instance of User]");
-                User pU = (User) principal;
-                log.error("User : " + pU.toString());
-            }
-
             if (result.hasErrors()) {
-                log.error("form has errors");
                 return "login-continue";
             }
 
-            log.error("updating user...");
             //save user, update
             userService.saveUser(new User(id, user.getFullName(),
                     user.getAboutMe(), user.getTelephone()));

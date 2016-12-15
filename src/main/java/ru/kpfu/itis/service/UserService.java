@@ -5,8 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import ru.kpfu.itis.exception.ServerException;
 import ru.kpfu.itis.model.entity.Game;
+
+import ru.kpfu.itis.model.entity.Chat;
+import ru.kpfu.itis.model.entity.Group;
+
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.GameRepository;
 import ru.kpfu.itis.repository.OpenIdRepository;
@@ -19,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -55,7 +62,7 @@ public class UserService {
 //
 //        }
 //
-//    }   THIS IS TOO SLOOOOOOOOOW!!!
+//    }   THIS IS TOO SLOOOOOOOOOW!!! YEP ^_^ Agreed!
 
     public User saveUser(User user) {
         //find user's info from steam
@@ -118,6 +125,32 @@ public class UserService {
             user.setGamesSet(gameSet);
         }
         return user;
+    }
+
+    public User findOne(Long id) {
+        return userRepository.findOne(id);
+    }
+
+    public List<Chat> findAllChats(Long userId) {
+        return findOne(userId).getChatList();
+    }
+
+    public User findUserByToken(String token) {
+        return userRepository.findByOpenid(token);
+    }
+
+    public User findUserByFullName(String fullName) {
+        return userRepository.findByFullName(fullName);
+    }
+
+    public void addGroup(Group group, User user){
+        user.addGroup(group);
+        userRepository.save(user);
+    }
+
+    public void unsubscribeFromGroup(Group group, User user){
+        user.deleteGroup(group);
+        userRepository.save(user);
     }
 
 }

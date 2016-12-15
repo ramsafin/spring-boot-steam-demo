@@ -1,9 +1,10 @@
 .DS_Store
 *.iml
-*.idea
-target
-out
+*.idea/
+target/
+out/
 *.class
 *.war
 *.jar
 application.properties
+node_modules/
