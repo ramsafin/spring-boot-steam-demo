@@ -32,6 +32,12 @@ public class User implements UserDetails {
         this.joinDateTime = LocalDateTime.now();
     }
 
+    @JsonIgnore
+    private Set<Group> groupsList = new HashSet<>();
+
+    @JsonIgnore
+    private Set<Group> createdGroups = new HashSet<>();
+
     public User(Long id, String fullName, String aboutMe, String telephone) {
         this();
         this.id = id;
@@ -86,6 +92,35 @@ public class User implements UserDetails {
         return chatList;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "user_group", joinColumns = {
+            @JoinColumn(name = "user_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "group_id",
+                    nullable = false, updatable = false)})
+    public Set<Group> getGroupsList() {
+        return groupsList;
+    }
+
+    public void setGroupsList(Set<Group> groupsList) {
+        this.groupsList = groupsList;
+    }
+
+    public void addGroup(Group group){
+        groupsList.add(group);
+    }
+
+    public void deleteGroup(Group group){
+        groupsList.remove(group);
+    }
+
+    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<Group> getCreatedGroups() {
+        return createdGroups;
+    }
+
+    public void setCreatedGroups(Set<Group> createdGroups) {
+        this.createdGroups = createdGroups;
+    }
 
     public void addOpenId(UserOpenIds openIds) {
         openIds.setUser(this);

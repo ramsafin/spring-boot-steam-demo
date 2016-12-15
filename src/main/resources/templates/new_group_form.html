@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <title tiles:fragment="title">New Group</title>
+</head>
+<body>
+<div tiles:fragment="content">
+
+    <h1>Create group:</h1>
+
+    <form action="#" th:object="${group}" method="post">
+        <table>
+            <tr>
+                <td>Title:</td>
+                <td><input type="text" th:field="*{name}"/></td>
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+            </tr>
+
+            <tr>
+                <td>Description:</td>
+                <td><input type="text" th:field="*{description}"/></td>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="id" th:value="${id}"/>
+    </form>
+
+</div>
+</body>
+</html>

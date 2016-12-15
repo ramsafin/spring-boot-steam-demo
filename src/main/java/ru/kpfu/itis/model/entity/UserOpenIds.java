@@ -1,10 +1,11 @@
 package ru.kpfu.itis.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user_openid")
-public class UserOpenIds {
+public class UserOpenIds implements Serializable {
 
     private String openidUrl;
 
