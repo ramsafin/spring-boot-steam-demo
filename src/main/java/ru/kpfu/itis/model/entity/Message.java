@@ -5,6 +5,7 @@ import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 @Entity
 @Table(name = "message")
@@ -84,6 +85,7 @@ public class Message implements Serializable {
         this.sentAt = sentAt;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,4 +109,14 @@ public class Message implements Serializable {
         result = 31 * result + (sentAt != null ? sentAt.hashCode() : 0);
         return result;
     }
+
+    public static Comparator<Message> compareByDates() {
+        return (m1, m2) -> {
+            if (m1 == null && m2 == null) return 0;
+            if (m1 == null) return -1;
+            if (m2 == null) return 1;
+            return m1.getSentAt().compareTo(m2.getSentAt());
+        };
+    }
+
 }

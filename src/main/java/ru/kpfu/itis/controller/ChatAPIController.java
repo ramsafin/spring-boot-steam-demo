@@ -103,8 +103,6 @@ public class ChatAPIController {
                                         message.getSender().getFullName(), message.getMessageText(), chatId, "avatar"))
                                 .collect(Collectors.toList()),
                         chatId,
-                        user.getFullName(),
-                        user.getId(),
                         chatUser.getId(),
                         chatUser.getFullName()
                 );

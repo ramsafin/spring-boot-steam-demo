@@ -61,7 +61,7 @@ public class ChatController {
 
         modelMap.addAttribute("chats", chatList);
 
-        return "chat";
+        return "test/chat";
     }
 
 
