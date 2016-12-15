@@ -6,4 +6,5 @@ out/
 *.class
 *.war
 *.jar
+application.properties
 node_modules/

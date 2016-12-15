@@ -10,11 +10,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.dto.UserDTO;
+import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
+import ru.kpfu.itis.service.GameService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
 
 @Controller
 public class LoginController {
@@ -23,10 +26,10 @@ public class LoginController {
 
     private final UserService userService;
 
-    @Lazy
     @Autowired
     public LoginController(UserService userService) {
         this.userService = userService;
+
     }
 
     @GetMapping("/login")
@@ -44,6 +47,15 @@ public class LoginController {
         log.error("return login view");
 
         return "login";
+    }
+
+    @GetMapping("/synchronize")
+    public String sync(OpenIDAuthenticationToken authentication) {
+        User user = (User) authentication.getPrincipal();
+        log.error("Update user info...");
+        log.error("id : " + user.getId());
+        userService.updateSteamInfo(user);
+        return "redirect:/";
     }
 
 
@@ -75,7 +87,6 @@ public class LoginController {
             //save user, update
             userService.saveUser(new User(id, user.getFullName(),
                     user.getAboutMe(), user.getTelephone()));
-
             return "redirect:/";
 
         }

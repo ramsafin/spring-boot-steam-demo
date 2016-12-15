@@ -17,6 +17,10 @@ public class User implements UserDetails {
 
     private String fullName;
 
+    private String steamNickname;
+
+    private String avatarUrl;
+
     private LocalDateTime joinDateTime;
 
     private String aboutMe;
@@ -24,20 +28,27 @@ public class User implements UserDetails {
     private String telephone;
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
-
-    @JsonIgnore
-    private List<Chat> chatList = new LinkedList<>();
-
-    public User() {
-        this.joinDateTime = LocalDateTime.now();
-    }
-
+  
     @JsonIgnore
     private Set<Group> groupsList = new HashSet<>();
 
     @JsonIgnore
     private Set<Group> createdGroups = new HashSet<>();
 
+
+    @JsonIgnore
+    private Set<Game> gamesSet = new HashSet<>();
+  
+    @JsonIgnore
+    private List<Chat> chatList = new LinkedList<>();
+
+    
+
+    public User() {
+        this.joinDateTime = LocalDateTime.now();
+    }
+
+   
     public User(Long id, String fullName, String aboutMe, String telephone) {
         this();
         this.id = id;
@@ -99,6 +110,19 @@ public class User implements UserDetails {
                     nullable = false, updatable = false)})
     public Set<Group> getGroupsList() {
         return groupsList;
+    }
+  
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_game",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id"))
+    public Set<Game> getGamesSet () {
+        return gamesSet;
+    }
+
+    public void setGamesSet(Set<Game> gamesSet) {
+        this.gamesSet = gamesSet;
     }
 
     public void setGroupsList(Set<Group> groupsList) {
@@ -208,5 +232,24 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return String.format("User: [name : %s, telephone : %s]", fullName, telephone);
+    }
+
+
+    @Column(name = "steam_nickname")
+    public String getSteamNickname() {
+        return steamNickname;
+    }
+
+    public void setSteamNickname(String steamNickname) {
+        this.steamNickname = steamNickname;
+    }
+
+    @Column(name = "avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
