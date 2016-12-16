@@ -3,15 +3,14 @@ package ru.kpfu.itis.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.dto.UserDTO;
-import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.GameService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;

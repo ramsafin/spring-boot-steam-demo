@@ -20,7 +20,8 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/chat/**", "/dialogs/**").permitAll()
+                .antMatchers("/js/**", "/img/**", "/fonts/**","/css/**", "/bower_components/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
                 .antMatchers("/login/**").permitAll()
