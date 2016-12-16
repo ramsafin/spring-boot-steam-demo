@@ -8,10 +8,7 @@ import ru.kpfu.itis.model.entity.User;
 
 import java.util.Set;
 
-/**
- * Created by root on 08.12.16.
- */
-public interface SpringGroupRepository extends JpaRepository<Group, Long>{
+public interface SpringGroupRepository extends JpaRepository<Group, Long> {
 
     @Query(value = "select u from User u " +
             "inner join u.groupsList g " +

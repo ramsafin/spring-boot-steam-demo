@@ -1,19 +1,16 @@
 package ru.kpfu.itis.model.entity;
 
 
+import org.joda.time.LocalDateTime;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.geometry.Pos;
-import org.joda.time.LocalDateTime;
-
-/**
- * Created by root on 08.12.16.
- */
 @Entity
 @Table(name = "groups")
-public class Group {
+public class Group implements Serializable {
 
     private Long id;
 

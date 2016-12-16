@@ -11,7 +11,8 @@ import java.util.Set;
 
 public interface SpringUserRepository extends JpaRepository<User, Long> {
 
-
     @Query(value = "select u from User u JOIN u.userOpenIdsSet o WHERE o.openidUrl = :openid")
-    Optional<User> findByOpenid(@Param("openid") String openid);
+    User findByOpenid(@Param("openid") String openid);
+
+    User findByFullName(String fullName);
 }

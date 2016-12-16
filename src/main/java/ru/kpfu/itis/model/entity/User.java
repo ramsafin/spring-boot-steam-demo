@@ -1,18 +1,17 @@
 package ru.kpfu.itis.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.LocalDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     private Long id;
 
@@ -26,13 +25,21 @@ public class User implements UserDetails{
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
 
+    @JsonIgnore
+    private List<Chat> chatList = new LinkedList<>();
+
+    public User() {
+        this.joinDateTime = LocalDateTime.now();
+    }
+
+    @JsonIgnore
     private Set<Group> groupsList = new HashSet<>();
 
+    @JsonIgnore
     private Set<Group> createdGroups = new HashSet<>();
 
-    public User() {}
-
     public User(Long id, String fullName, String aboutMe, String telephone) {
+        this();
         this.id = id;
         this.fullName = fullName;
         this.aboutMe = aboutMe;
@@ -46,53 +53,43 @@ public class User implements UserDetails{
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Column(name = "full_name")
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
+    @JsonIgnore
     @Column(name = "joined_at")
     public LocalDateTime getJoinDateTime() {
         return joinDateTime;
     }
 
-    public void setJoinDateTime(LocalDateTime joinDateTime) {
-        this.joinDateTime = joinDateTime;
-    }
 
+    @JsonIgnore
     @Column(name = "telephone")
     public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
 
+    @JsonIgnore
     @Column(name = "about_me")
     public String getAboutMe() {
         return aboutMe;
     }
 
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<UserOpenIds> getUserOpenIdsSet() {
         return userOpenIdsSet;
     }
 
-    public void setUserOpenIdsSet(Set<UserOpenIds> userOpenIdsSet) {
-        this.userOpenIdsSet = userOpenIdsSet;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
+    public List<Chat> getChatList() {
+        return chatList;
     }
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -126,52 +123,82 @@ public class User implements UserDetails{
     }
 
     public void addOpenId(UserOpenIds openIds) {
+        openIds.setUser(this);
         this.userOpenIdsSet.add(openIds);
     }
 
 
-    @PrePersist
-    public void setUpBeforePersist() {
-        //set up joined at date
-        this.joinDateTime = LocalDateTime.now();
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setJoinDateTime(LocalDateTime joinDateTime) {
+        this.joinDateTime = joinDateTime;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public void setUserOpenIdsSet(Set<UserOpenIds> userOpenIdsSet) {
+        this.userOpenIdsSet = userOpenIdsSet;
+    }
+
+    public void setChatList(List<Chat> chatList) {
+        this.chatList = chatList;
+    }
+
+    @JsonIgnore
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public String getPassword() {
         return "";
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public String getUsername() {
         return getUserOpenIdsSet().toArray(new UserOpenIds[0])[0].getOpenidUrl();
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isEnabled() {

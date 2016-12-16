@@ -1,12 +1,13 @@
 package ru.kpfu.itis.model.entity;
 
-import javax.persistence.*;
-
 import org.joda.time.LocalDateTime;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Serializable {
 
     private Long id;
 

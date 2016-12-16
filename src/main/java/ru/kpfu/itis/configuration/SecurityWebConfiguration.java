@@ -1,6 +1,7 @@
 package ru.kpfu.itis.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,15 +21,19 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                    .antMatchers("/login/**").permitAll()
-                    .antMatchers("/resources/**").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers("/chat/**").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/resources/**", "/webjars/**", "/built/**").permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .openidLogin()
-                    .loginPage("/login").permitAll()
-                    .authenticationUserDetailsService(authenticationUserDetailsService())
-                    .failureUrl("/login?fail")
-                    .successHandler(authenticationSuccessHandler())
+                .loginPage("/login").permitAll()
+                .authenticationUserDetailsService(authenticationUserDetailsService())
+                .failureUrl("/login?fail")
+                .successHandler(authenticationSuccessHandler())
                 .and()
                 .csrf().disable();
     }
@@ -42,4 +47,5 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
     }
+
 }
