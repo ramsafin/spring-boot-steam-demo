@@ -27,7 +27,7 @@ public class GroupService {
         return groupRepository.findOne(id);
     }
 
-    public Set<User> getPariticipants(Group group) {
+    public Set<User> getParticipants(Group group) {
         return groupRepository.findGroupParticipants(group.getId());
     }
 

@@ -1,10 +1,14 @@
 package ru.kpfu.itis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 @Entity
 @Table(name = "message")
@@ -19,6 +23,8 @@ public class Message implements Serializable {
     private String messageText;
 
     private LocalDateTime sentAt;
+
+    private boolean isNew = false;
 
     public Message() {
         this.sentAt = LocalDateTime.now();
@@ -43,25 +49,34 @@ public class Message implements Serializable {
     }
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Chat getChat() {
         return chat;
     }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonProperty("sender")
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne
     public User getSender() {
         return sender;
     }
 
+    @JsonProperty("message")
     @Column(name = "message_text")
     public String getMessageText() {
         return messageText;
     }
 
+    @JsonProperty("sent")
     @Column(name = "sent_at")
     public LocalDateTime getSentAt() {
         return sentAt;
+    }
+
+    @JsonProperty("new")
+    @Column(name = "is_new")
+    public boolean isNew() {
+        return isNew;
     }
 
     public void setId(Long id) {
@@ -82,6 +97,10 @@ public class Message implements Serializable {
 
     public void setSentAt(LocalDateTime sentAt) {
         this.sentAt = sentAt;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 
     @Override
@@ -107,4 +126,14 @@ public class Message implements Serializable {
         result = 31 * result + (sentAt != null ? sentAt.hashCode() : 0);
         return result;
     }
+
+    public static Comparator<Message> compareByDates() {
+        return (m1, m2) -> {
+            if (m1 == null && m2 == null) return 0;
+            if (m1 == null) return -1;
+            if (m2 == null) return 1;
+            return m1.getSentAt().compareTo(m2.getSentAt());
+        };
+    }
+
 }

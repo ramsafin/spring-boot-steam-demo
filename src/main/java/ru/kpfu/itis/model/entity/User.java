@@ -25,17 +25,15 @@ public class User implements UserDetails {
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
 
-    @JsonIgnore
+
     private List<Chat> chatList = new LinkedList<>();
 
     public User() {
         this.joinDateTime = LocalDateTime.now();
     }
 
-    @JsonIgnore
     private Set<Group> groupsList = new HashSet<>();
 
-    @JsonIgnore
     private Set<Group> createdGroups = new HashSet<>();
 
     public User(Long id, String fullName, String aboutMe, String telephone) {
@@ -81,7 +79,7 @@ public class User implements UserDetails {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<UserOpenIds> getUserOpenIdsSet() {
         return userOpenIdsSet;
     }
@@ -92,6 +90,7 @@ public class User implements UserDetails {
         return chatList;
     }
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "user_group", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false, updatable = false)},
@@ -113,7 +112,9 @@ public class User implements UserDetails {
         groupsList.remove(group);
     }
 
-    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //TODO if exceptions, then invoke getCreatedGroups to your entity, it will select it
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Group> getCreatedGroups() {
         return createdGroups;
     }

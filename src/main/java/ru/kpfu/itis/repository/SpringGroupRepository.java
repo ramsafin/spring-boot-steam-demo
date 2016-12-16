@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface SpringGroupRepository extends JpaRepository<Group, Long> {
 
+<<<<<<< HEAD
     @Query(value = "select u from User u " +
             "inner join u.groupsList g " +
             "where g.id = :groupid")
@@ -19,4 +20,8 @@ public interface SpringGroupRepository extends JpaRepository<Group, Long> {
             "inner join g.participantList u " +
             "where u.id = :userid")
     Set<Group> findUsersGroups(@Param("userid") Long id);
+=======
+    @Query(value = "select u from User u inner join fetch u.groupsList g where g.id = :groupId")
+    Set<User> findGroupParticipants(@Param("groupId") Long groupId);
+>>>>>>> master
 }

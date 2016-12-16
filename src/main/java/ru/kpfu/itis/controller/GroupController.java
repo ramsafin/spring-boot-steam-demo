@@ -1,7 +1,6 @@
 package ru.kpfu.itis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ public class GroupController {
 
     private final PostService postService;
 
-    @Lazy
     @Autowired
     public GroupController(GroupService groupService, UserService userService, PostService postService) {
         this.groupService = groupService;
@@ -40,7 +38,13 @@ public class GroupController {
     public String groupPageIndex(@PathVariable Long id, ModelMap map, Principal principal) {
 
         Group group = groupService.findById(id);
+<<<<<<< HEAD
         Set<User> participants = groupService.getPariticipants(group);
+=======
+
+        Set<User> participants = groupService.getParticipants(group);
+
+>>>>>>> master
         Set<Post> posts = postService.getGroupPosts(group);
         if (principal != null) {
             User user = userService.findUserByToken(principal.getName());
