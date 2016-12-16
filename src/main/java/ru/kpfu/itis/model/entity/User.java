@@ -85,6 +85,7 @@ public class User implements UserDetails {
     }
 
     @JsonIgnore
+    @OrderBy(value = "updatedAt desc")
     @ManyToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
     public List<Chat> getChatList() {
         return chatList;

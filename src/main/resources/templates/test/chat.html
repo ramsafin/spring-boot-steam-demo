@@ -38,6 +38,7 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 <section class="hero">
+
     <section class="navigation">
         <header>
             <div class="header-content">
@@ -79,21 +80,28 @@
 
         <div class="chatbox">
 
-            <h3>Dude you are talking with</h3>
+            <h3>Choose dialog ...</h3>
 
             <div class="chat_inner">
 
-                <!--To you-->
-                <div class="chat_in clearfix">
-                    <span class="message">Hello</span>
-                    <span class="author">By somebody to you at 13:30</span>
+                <div th:if="${lastChat != null}">
+                    Hello
                 </div>
 
-                <!--From you-->
-                <div class="chat_out clearfix">
-                    <span class="message">Some message...</span>
-                    <span class="author">By me at 13:31</span>
+                <div th:if="${lastChat == null}">
+                    Hi
                 </div>
+                <!---->
+                <!--<div th:if="" th:each = "m : ${messages}" class="chat_in clearfix">-->
+                    <!--<span class="message">Hello</span>-->
+                    <!--<span class="author">By somebody to you at 13:30</span>-->
+                <!--</div>-->
+
+                <!--<div class="chat_out clearfix">-->
+                    <!--<span class="message">Some message...</span>-->
+                    <!--<span class="author">By me at 13:31</span>-->
+                <!--</div>-->
+
             </div>
 
             <div class="form">

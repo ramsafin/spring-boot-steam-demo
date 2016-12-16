@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.kpfu.itis.model.entity.Chat;
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.SpringChatRepository;
-import ru.kpfu.itis.service.UserService;
+import ru.kpfu.itis.repository.SpringUserRepository;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -23,54 +20,53 @@ public class ChatController {
 
     private static final Logger log = LoggerFactory.getLogger(ChatController.class);
 
-    private final UserService userService;
+    private final SpringUserRepository userRepository;
 
     private final SpringChatRepository chatRepository;
 
     @Autowired
-    public ChatController(UserService userService, SpringChatRepository chatRepository) {
-        this.userService = userService;
+    public ChatController(SpringUserRepository userRepository, SpringChatRepository chatRepository) {
+        this.userRepository = userRepository;
         this.chatRepository = chatRepository;
     }
 
-    @GetMapping("/chat")
-    public String chat(Principal principal, ModelMap modelMap) {
+    @GetMapping("/dialogs/user/{id}")
+    public String chat(@PathVariable("id") Long id, Principal principal, ModelMap modelMap) {
 
-        log.error("[Chat request]");
+        log.error(String.format("Requested url /dialogs/user/%d", id));
 
         User user;
 
         //TODO if principal is null then get user with id = 2
         if (principal == null) {
-
-            log.error("user is anonymous");
-            user = userService.findOne(2L); //delete this in production
+            user = userRepository.findUserById(2L); //delete this in production
 
         } else {
-            log.error("Found user " + principal.getName());
-            user = userService.findUserByToken(principal.getName());
+            user = userRepository.findUserByOpenid(principal.getName());
         }
 
-        List<Chat> chatList = chatRepository.findAll(user.getId());
-
-        if (chatList == null || chatList.size() == 0) {
-            chatList = Collections.emptyList();
+        if (!user.getId().equals(id)) {
+            return "404"; //TODO check 404
         }
+
+        List<Chat> chatList = user.getChatList(); //fetch chats
 
         modelMap.addAttribute("chats", chatList);
 
-        return "test/chat";
-    }
+        if (chatList.size() > 0) {
 
+            modelMap.addAttribute("lastChat", chatList.get(0));
 
-    @GetMapping("/chat/{chatId}")
-    public String chatRoom(@PathVariable Long chatId, ModelMap modelMap, Principal principal, HttpServletResponse resp) {
-        log.error("[chat room ], room id " + chatId);
-        if (principal != null) {
-            resp.addCookie(new Cookie("user", principal.getName()));
+            modelMap.addAttribute("chatUser", chatList.get(0).getUserSet().stream()
+                    .filter(u -> !u.getId().equals(id)).findFirst().get());
+
+            modelMap.addAttribute("messages", chatList.get(0).getMessageSet());
         }
-        modelMap.addAttribute("chatRoom", chatId);
-        return "chatRoom";
+
+        modelMap.addAttribute("user", user);
+        modelMap.addAttribute("id", id);
+
+        return "test/chat";
     }
 
 }

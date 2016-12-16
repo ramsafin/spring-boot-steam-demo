@@ -75,7 +75,7 @@ public class Message implements Serializable {
 
     @JsonProperty("new")
     @Column(name = "is_new")
-    public boolean isNew() {
+    public boolean getIsNew() {
         return isNew;
     }
 
@@ -99,7 +99,7 @@ public class Message implements Serializable {
         this.sentAt = sentAt;
     }
 
-    public void setNew(boolean aNew) {
+    public void setIsNew(boolean aNew) {
         isNew = aNew;
     }
 
