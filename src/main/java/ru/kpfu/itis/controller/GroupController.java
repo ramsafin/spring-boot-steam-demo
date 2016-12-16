@@ -3,10 +3,7 @@ package ru.kpfu.itis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.entity.Group;
 import ru.kpfu.itis.model.entity.Post;
 import ru.kpfu.itis.model.entity.User;
@@ -16,6 +13,7 @@ import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -36,15 +34,8 @@ public class GroupController {
 
     @GetMapping("/group/{id}")
     public String groupPageIndex(@PathVariable Long id, ModelMap map, Principal principal) {
-
         Group group = groupService.findById(id);
-<<<<<<< HEAD
-        Set<User> participants = groupService.getPariticipants(group);
-=======
-
         Set<User> participants = groupService.getParticipants(group);
-
->>>>>>> master
         Set<Post> posts = postService.getGroupPosts(group);
         if (principal != null) {
             User user = userService.findUserByToken(principal.getName());
@@ -64,7 +55,7 @@ public class GroupController {
         map.put("group", group);
         map.put("subscribers", participants);
         map.put("posts", posts);
-        return "test/";
+        return "new_group_form";
     }
 
 
@@ -102,5 +93,20 @@ public class GroupController {
         postService.addPost(new Post(post.getTitle(), post.getBody()), group);
         return "redirect:/group/{id}";
     }
+
+    @GetMapping("/groups")
+    public String groupsList(ModelMap map){
+        List<Group> groups = groupService.findAll();
+        map.put("groups", groups);
+        return "test/groups";
+    }
+
+//    @PostMapping("/groups")
+//    public String groupsListPost(@RequestParam String param){
+//        switch (param){
+//            case "name":
+//                Set<Group> groups = groupService.
+//        }
+//    }
 
 }

@@ -12,12 +12,12 @@ public interface SpringMessageRepository extends JpaRepository<Message, Long> {
     @Query("select distinct m from Message m inner join fetch m.sender s where m.chat.id = :chatId")
     List<Message> findAllByChatId(@Param("chatId") Long chatId);
 
-    @Query("select distinct count(m) from Message m inner join fetch m.sender s where m.chat.id = :chatId")
-    Long countAllByChatId(@Param("chatId") Long chatId);
-
-    @Query("select distinct m from Message " +
-            "inner join fetch m.sender s where m.chat.id = :chatId")
-    List<Message> findAllNewMessages(@Param("chatId") Long chatId);
+//    @Query("select distinct count(m) from Message m inner join fetch m.sender s where m.chat.id = :chatId")
+//    Long countAllByChatId(@Param("chatId") Long chatId);
+//
+//    @Query("select distinct m from Message m " +
+//            "inner join fetch m.sender s where m.chat.id = :chatId")
+//    List<Message> findAllNewMessages(@Param("chatId") Long chatId);
 
 
 }

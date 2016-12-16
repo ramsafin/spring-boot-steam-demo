@@ -6,6 +6,7 @@ import ru.kpfu.itis.model.entity.Group;
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.SpringGroupRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -16,6 +17,10 @@ public class GroupService {
     @Autowired
     public GroupService(SpringGroupRepository groupRepository) {
         this.groupRepository = groupRepository;
+    }
+
+    public List<Group> findAll(){
+        return groupRepository.findAll();
     }
 
     public Group addGroup(Group group, User owner) {
