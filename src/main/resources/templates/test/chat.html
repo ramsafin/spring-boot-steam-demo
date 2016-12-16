@@ -84,27 +84,23 @@
 
             <div class="chat_inner">
 
-                <div th:if="${lastChat != null}" th:text="Hello">
-                    <p>Hello</p>
+                <div th:if="${lastChat != null}">
+
+                    <div class="chat_in clearfix">
+                        <span class="message">Hello</span>
+                        <span class="author">By somebody to you at 13:30</span>
+                    </div>
+
+                    <div class="chat_out clearfix">
+                        <span class="message">Some message...</span>
+                        <span class="author">By me at 13:31</span>
+                    </div>
                 </div>
 
-                <div th:if="${lastChat == null}" th:text="Hello">
-                    Hi
-                </div>
-                <!---->
-                <!--<div th:if="" th:each = "m : ${messages}" class="chat_in clearfix">-->
-                    <!--<span class="message">Hello</span>-->
-                    <!--<span class="author">By somebody to you at 13:30</span>-->
-                <!--</div>-->
-
-                <!--<div class="chat_out clearfix">-->
-                    <!--<span class="message">Some message...</span>-->
-                    <!--<span class="author">By me at 13:31</span>-->
-                <!--</div>-->
 
             </div>
 
-            <div class="form">
+            <div th:if="${lastChat}" class="form">
                 <form id="message_form" action="#" accept-charset="utf-8">
                     <input type="text" id="message_text" name="message" placeholder="Type message and press enter..."/>
                 </form>
@@ -185,19 +181,19 @@
     $(document).ready(() => {
 
         //fetch messages, update chats
-        setInterval( ()=> {
+        setInterval(() => {
             console.log('fetching...');
         }, 2000); //2 seconds
 
         //on message sending
-        $('#message_form').submit( (e) => {
+        $('#message_form').submit((e) => {
             e.preventDefault();
             const message = $('#message_form').find('#message_text');
             console.log(message.val());
         });
 
         //on change dialog, load messages
-        $('[data-chat-id]').click( (e) => {
+        $('[data-chat-id]').click((e) => {
             e.preventDefault();
             console.log(e);
         });
