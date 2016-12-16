@@ -17,19 +17,19 @@
     <title th:title="Chat"></title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
-    <link rel="stylesheet" href="css/normalize.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/jquery.fancybox.css"/>
-    <link rel="stylesheet" href="css/flexslider.css"/>
-    <link rel="stylesheet" href="css/styles.css"/>
-    <link rel="stylesheet" href="css/queries.css"/>
-    <link rel="stylesheet" href="css/etline-font.css"/>
-    <link rel="stylesheet" href="bower_components/animate.css/animate.min.css"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16"/>
+    <link rel="stylesheet" href="/css/normalize.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.fancybox.css"/>
+    <link rel="stylesheet" href="/css/flexslider.css"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <link rel="stylesheet" href="/css/queries.css"/>
+    <link rel="stylesheet" href="/css/etline-font.css"/>
+    <link rel="stylesheet" href="/bower_components/animate.css/animate.min.css"/>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
-    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 
 <body id="top">
@@ -42,7 +42,7 @@
     <section class="navigation">
         <header>
             <div class="header-content">
-                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
+                <div class="logo"><a href="#"><img src="/img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
                 <div class="header-nav">
                     <nav>
                         <ul class="primary-nav">
@@ -84,11 +84,11 @@
 
             <div class="chat_inner">
 
-                <div th:if="${lastChat != null}">
-                    Hello
+                <div th:if="${lastChat != null}" th:text="Hello">
+                    <p>Hello</p>
                 </div>
 
-                <div th:if="${lastChat == null}">
+                <div th:if="${lastChat == null}" th:text="Hello">
                     Hi
                 </div>
                 <!---->
@@ -120,13 +120,13 @@
 
                 <!--TODO active chats sorted by updated at-->
                 <div data-chat-id="1" class="roundcorner">
-                    <img src="img/130.jpg" alt="Фотография 1"/>
+                    <img src="/img/130.jpg" alt="Фотография 1"/>
                     <!--TODO handle reload page-->
                     <span> <a href="#">Somebody</a></span>
                 </div>
 
                 <div data-chat-id="2" class="roundcorner">
-                    <img src="img/130.jpg" alt="Фотография 1"/>
+                    <img src="/img/130.jpg" alt="Фотография 1"/>
                     <!--TODO handle reload page-->
                     <span> <a href="#">Somebody New</a></span>
                 </div>
@@ -156,7 +156,7 @@
                     <ul class="footer-group">
                         <li>
                             <a href="http://steamcommunity.com/">
-                                <img src="img/steam.png"/>
+                                <img src="/img/steam.png"/>
                             </a>
                         </li>
                     </ul>
@@ -172,14 +172,14 @@
     </div>
 </footer>
 
-<script th:src="@{js/vendor/jquery-1.11.2.min.js}"></script>
-<script th:src="@{bower_components/retina.js/dist/retina.js}"></script>
-<script th:src="@{js/jquery.fancybox.pack.js}"></script>
-<script th:src="@{js/vendor/bootstrap.min.js}"></script>
-<script th:src="@{js/scripts.js}"></script>
-<script th:src="@{js/jquery.flexslider-min.js}"></script>
-<script th:src="@{bower_components/classie/classie.js}"></script>
-<script th:src="@{bower_components/jquery-waypoints/lib/jquery.waypoints.min.js}"></script>
+<script src="/js/vendor/jquery-1.11.2.min.js"></script>
+<script src="/bower_components/retina.js/dist/retina.js"></script>
+<script src="/js/jquery.fancybox.pack.js"></script>
+<script src="/js/vendor/bootstrap.min.js"></script>
+<script src="/js/scripts.js"></script>
+<script src="/js/jquery.flexslider-min.js"></script>
+<script src="/bower_components/classie/classie.js"></script>
+<script src="/bower_components/jquery-waypoints/lib/jquery.waypoints.min.js"></script>
 
 <script>
     $(document).ready(() => {

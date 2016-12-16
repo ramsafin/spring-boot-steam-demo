@@ -30,22 +30,28 @@ public class ChatController {
         this.chatRepository = chatRepository;
     }
 
+
     @GetMapping("/dialogs/user/{id}")
     public String chat(@PathVariable("id") Long id, Principal principal, ModelMap modelMap) {
 
         log.error(String.format("Requested url /dialogs/user/%d", id));
 
+        log.error("[openid = " + principal.getName() + "]");
+
         User user;
 
         //TODO if principal is null then get user with id = 2
         if (principal == null) {
+            log.error("[principal is null]");
             user = userRepository.findUserById(2L); //delete this in production
 
         } else {
             user = userRepository.findUserByOpenid(principal.getName());
+            log.error("[user with id = " + user.getId() + "]");
         }
 
-        if (!user.getId().equals(id)) {
+        if (!id.equals(user.getId())) {
+            log.error("id : + " + id + ", id user : " + user.getId());
             return "404"; //TODO check 404
         }
 
@@ -54,6 +60,7 @@ public class ChatController {
         modelMap.addAttribute("chats", chatList);
 
         if (chatList.size() > 0) {
+
 
             modelMap.addAttribute("lastChat", chatList.get(0));
 
