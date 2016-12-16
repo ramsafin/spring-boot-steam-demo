@@ -30,7 +30,6 @@ public class Group implements Serializable {
     }
 
     public Group(String name, String description) {
-        this.id = id;
         this.name = name;
         this.description = description;
     }

@@ -3,14 +3,13 @@ package ru.kpfu.itis.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kpfu.itis.model.entity.Chat;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.ChatService;
+import ru.kpfu.itis.repository.SpringChatRepository;
 import ru.kpfu.itis.service.UserService;
 
 import javax.servlet.http.Cookie;
@@ -26,13 +25,12 @@ public class ChatController {
 
     private final UserService userService;
 
-    private final ChatService chatService;
+    private final SpringChatRepository chatRepository;
 
-    @Lazy
     @Autowired
-    public ChatController(UserService userService, ChatService chatService) {
+    public ChatController(UserService userService, SpringChatRepository chatRepository) {
         this.userService = userService;
-        this.chatService = chatService;
+        this.chatRepository = chatRepository;
     }
 
     @GetMapping("/chat")
@@ -53,7 +51,7 @@ public class ChatController {
             user = userService.findUserByToken(principal.getName());
         }
 
-        List<Chat> chatList = chatService.findAll(user.getId());
+        List<Chat> chatList = chatRepository.findAll(user.getId());
 
         if (chatList == null || chatList.size() == 0) {
             chatList = Collections.emptyList();

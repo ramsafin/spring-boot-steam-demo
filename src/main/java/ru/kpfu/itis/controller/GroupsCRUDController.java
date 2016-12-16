@@ -2,7 +2,6 @@ package ru.kpfu.itis.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,7 +24,6 @@ public class GroupsCRUDController {
 
     private final UserService userService;
 
-    @Lazy
     @Autowired
     public GroupsCRUDController(GroupService groupService, UserService userService) {
         this.groupService = groupService;

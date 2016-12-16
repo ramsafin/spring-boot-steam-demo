@@ -1,5 +1,6 @@
 package ru.kpfu.itis.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.inject.internal.Objects;
 import org.joda.time.LocalDateTime;
 
@@ -22,41 +23,54 @@ public class Chat implements Serializable {
 
     private Set<User> userSet = new HashSet<>();
 
+    private boolean isNew = true;
+
+
     public Chat() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Chat(Set<User> userSet) {
-        this.userSet = userSet;
-    }
 
     @Id
+    @JsonProperty("id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    @JsonProperty("new")
+    @Column(name = "new")
+    public boolean getIsNew() {
+        return isNew;
+    }
+
+    @JsonProperty("created")
     @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-
+    @JsonProperty("updated")
     @Column(name = "updated_at")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonProperty("messages")
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<Message> getMessageSet() {
         return messageSet;
     }
 
-
+    @JsonProperty("users")
     @ManyToMany(fetch = FetchType.EAGER)
     public Set<User> getUserSet() {
         return userSet;
+    }
+
+    public void setIsNew(boolean aNew) {
+        isNew = aNew;
     }
 
     public void setId(Long id) {
@@ -85,6 +99,7 @@ public class Chat implements Serializable {
     }
 
     @Transient
+    @JsonProperty("lastMessage")
     public Message getLastMessage() {
         if (messageSet.isEmpty()) return null;
 

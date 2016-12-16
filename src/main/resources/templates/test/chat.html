@@ -111,10 +111,16 @@
             <div class="chat_users_inner">
 
                 <!--TODO active chats sorted by updated at-->
-                <div class="roundcorner">
+                <div data-chat-id="1" class="roundcorner">
                     <img src="img/130.jpg" alt="Фотография 1"/>
                     <!--TODO handle reload page-->
                     <span> <a href="#">Somebody</a></span>
+                </div>
+
+                <div data-chat-id="2" class="roundcorner">
+                    <img src="img/130.jpg" alt="Фотография 1"/>
+                    <!--TODO handle reload page-->
+                    <span> <a href="#">Somebody New</a></span>
                 </div>
 
             </div>
@@ -170,7 +176,7 @@
 <script>
     $(document).ready(() => {
 
-        //fetch messages each 2 seconds
+        //fetch messages, update chats
         setInterval( ()=> {
             console.log('fetching...');
         }, 2000); //2 seconds
@@ -182,9 +188,11 @@
             console.log(message.val());
         });
 
-        //track new messages form other dialogs
-        setInterval( ())
-
+        //on change dialog, load messages
+        $('[data-chat-id]').click( (e) => {
+            e.preventDefault();
+            console.log(e);
+        });
     })
 </script>
 
