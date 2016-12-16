@@ -1,27 +1,31 @@
 package ru.kpfu.itis.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.LocalDateTime;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class ChatDTO implements Serializable {
 
+    @JsonProperty("messages")
     private List<MessageDTO> messages;
 
+    @JsonProperty("chatId")
     private Long chatId;
 
-    private String meName;
-
-    private Long meId;
-
+    @JsonProperty("userId")
     private Long userId;
 
+    @JsonProperty("userName")
     private String userName;
 
-    public ChatDTO(List<MessageDTO> messages, Long chatId, String meName, Long meId, Long userId, String userName) {
+    @JsonProperty("updated")
+    private LocalDateTime updated;
+
+    public ChatDTO(List<MessageDTO> messages, Long chatId, Long userId, String userName, LocalDateTime updated) {
         this.messages = messages;
         this.chatId = chatId;
-        this.meName = meName;
-        this.meId = meId;
         this.userId = userId;
         this.userName = userName;
     }
@@ -42,22 +46,6 @@ public class ChatDTO implements Serializable {
         this.chatId = chatId;
     }
 
-    public String getMeName() {
-        return meName;
-    }
-
-    public void setMeName(String meName) {
-        this.meName = meName;
-    }
-
-    public Long getMeId() {
-        return meId;
-    }
-
-    public void setMeId(Long meId) {
-        this.meId = meId;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -72,5 +60,13 @@ public class ChatDTO implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 }

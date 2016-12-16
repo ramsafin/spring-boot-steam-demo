@@ -28,27 +28,21 @@ public class User implements UserDetails {
     private String telephone;
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
-  
-    @JsonIgnore
-    private Set<Group> groupsList = new HashSet<>();
 
-    @JsonIgnore
-    private Set<Group> createdGroups = new HashSet<>();
-
-
-    @JsonIgnore
     private Set<Game> gamesSet = new HashSet<>();
-  
-    @JsonIgnore
+
     private List<Chat> chatList = new LinkedList<>();
 
-    
+    private Set<Group> groupsList = new HashSet<>();
+
+    private Set<Group> createdGroups = new HashSet<>();
+
 
     public User() {
         this.joinDateTime = LocalDateTime.now();
     }
 
-   
+
     public User(Long id, String fullName, String aboutMe, String telephone) {
         this();
         this.id = id;
@@ -92,18 +86,20 @@ public class User implements UserDetails {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<UserOpenIds> getUserOpenIdsSet() {
         return userOpenIdsSet;
     }
 
     @JsonIgnore
+    @OrderBy(value = "updatedAt desc")
     @ManyToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
     public List<Chat> getChatList() {
         return chatList;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_group", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "group_id",
@@ -111,13 +107,13 @@ public class User implements UserDetails {
     public Set<Group> getGroupsList() {
         return groupsList;
     }
-  
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_game",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "game_id"))
-    public Set<Game> getGamesSet () {
+    public Set<Game> getGamesSet() {
         return gamesSet;
     }
 
@@ -129,15 +125,17 @@ public class User implements UserDetails {
         this.groupsList = groupsList;
     }
 
-    public void addGroup(Group group){
+    public void addGroup(Group group) {
         groupsList.add(group);
     }
 
-    public void deleteGroup(Group group){
+    public void deleteGroup(Group group) {
         groupsList.remove(group);
     }
 
-    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //TODO if exceptions, then invoke getCreatedGroups to your entity, it will select it
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Group> getCreatedGroups() {
         return createdGroups;
     }

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.kpfu.itis.model.entity.User;
 
 import java.io.Serializable;
 
@@ -13,37 +14,22 @@ public class MessageDTO implements Serializable {
     private String date;
 
     @JsonProperty("sender")
-    private String sender;
+    private User sender;
 
-    @JsonProperty("msg")
-    private String msg;
-
-    @JsonProperty("avatar")
-    private String avatar;
+    @JsonProperty("message")
+    private String message;
 
     @JsonProperty("chatId")
     private Long chatId;
 
 
-    public MessageDTO() {
-    }
+    public MessageDTO() { }
 
-    public MessageDTO(Long id, String date, String sender, String msg, Long chatId, String avatar) {
+    public MessageDTO(Long id, String date, User sender, String message) {
         this.id = id;
         this.date = date;
         this.sender = sender;
-        this.msg = msg;
-        this.avatar = avatar;
-        this.chatId = chatId;
-    }
-
-
-    public Long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
+        this.message = message;
     }
 
     public Long getId() {
@@ -62,27 +48,27 @@ public class MessageDTO implements Serializable {
         this.date = date;
     }
 
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public Long getChatId() {
+        return chatId;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 }

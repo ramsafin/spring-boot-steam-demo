@@ -11,8 +11,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import ru.kpfu.itis.model.handler.CustomAuthenticationSuccessHandler;
 import ru.kpfu.itis.service.CustomUserDetailsService;
 
-import javax.servlet.FilterRegistration;
-
 @EnableWebSecurity
 public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -26,8 +24,8 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-                .antMatchers("/resources/**", "/webjars/**", "/built/**").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/resources/**", "/webjars/**", "/built/**", "/static/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .openidLogin()
                 .loginPage("/login").permitAll()
