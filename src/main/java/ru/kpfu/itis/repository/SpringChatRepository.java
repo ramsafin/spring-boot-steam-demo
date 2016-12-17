@@ -12,11 +12,11 @@ public interface SpringChatRepository extends JpaRepository<Chat, Long> {
 
 
     //get count of chats which are updated after fromDate
-    @Query(value = "select distinct count(c) from Chat c where c.updatedAt >= :fromDate")
+    @Query("select distinct count(c) from Chat c where c.updatedAt >= :fromDate")
     Long countAllChatsFromDate(@Param("fromDate") LocalDateTime fromDate);
 
     //get all chats which are updated after fromDate
-    @Query(value = "select distinct c from Chat c join fetch c.messageSet " +
+    @Query("select distinct c from Chat c join fetch c.messageSet " +
             "join fetch c.userSet us where c.updatedAt >= :fromDate")
     List<Chat> findAllChatFromDate(@Param("fromDate") LocalDateTime fromDate);
 
@@ -38,8 +38,10 @@ public interface SpringChatRepository extends JpaRepository<Chat, Long> {
      * @param userId - user id
      * @return chats (without messages), see findAll(Long userId)
      */
-    @Query(value = "select distinct c from Chat c inner join fetch c.userSet u")
-    List<Chat> findAllWithoutFetchUser(@Param("userId") Long userId);
+    @Query("select distinct c from Chat c inner join fetch c.userSet u")
+    List<Chat> findAllWithoutFetchMessages(@Param("userId") Long userId);
+
+
 
 
 }

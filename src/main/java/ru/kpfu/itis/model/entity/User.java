@@ -17,6 +17,10 @@ public class User implements UserDetails {
 
     private String fullName;
 
+    private String steamNickname;
+
+    private String avatarUrl;
+
     private LocalDateTime joinDateTime;
 
     private String aboutMe;
@@ -25,16 +29,19 @@ public class User implements UserDetails {
 
     private Set<UserOpenIds> userOpenIdsSet = new HashSet<>();
 
+    private Set<Game> gamesSet = new HashSet<>();
 
     private List<Chat> chatList = new LinkedList<>();
+
+    private Set<Group> groupsList = new HashSet<>();
+
+    private Set<Group> createdGroups = new HashSet<>();
+
 
     public User() {
         this.joinDateTime = LocalDateTime.now();
     }
 
-    private Set<Group> groupsList = new HashSet<>();
-
-    private Set<Group> createdGroups = new HashSet<>();
 
     public User(Long id, String fullName, String aboutMe, String telephone) {
         this();
@@ -85,13 +92,14 @@ public class User implements UserDetails {
     }
 
     @JsonIgnore
+    @OrderBy(value = "updatedAt desc")
     @ManyToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
     public List<Chat> getChatList() {
         return chatList;
     }
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_group", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "group_id",
@@ -100,21 +108,34 @@ public class User implements UserDetails {
         return groupsList;
     }
 
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_game",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id"))
+    public Set<Game> getGamesSet() {
+        return gamesSet;
+    }
+
+    public void setGamesSet(Set<Game> gamesSet) {
+        this.gamesSet = gamesSet;
+    }
+
     public void setGroupsList(Set<Group> groupsList) {
         this.groupsList = groupsList;
     }
 
-    public void addGroup(Group group){
+    public void addGroup(Group group) {
         groupsList.add(group);
     }
 
-    public void deleteGroup(Group group){
+    public void deleteGroup(Group group) {
         groupsList.remove(group);
     }
 
     //TODO if exceptions, then invoke getCreatedGroups to your entity, it will select it
     @JsonIgnore
-    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Group> getCreatedGroups() {
         return createdGroups;
     }
@@ -209,5 +230,24 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return String.format("User: [name : %s, telephone : %s]", fullName, telephone);
+    }
+
+
+    @Column(name = "steam_nickname")
+    public String getSteamNickname() {
+        return steamNickname;
+    }
+
+    public void setSteamNickname(String steamNickname) {
+        this.steamNickname = steamNickname;
+    }
+
+    @Column(name = "avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

@@ -22,6 +22,12 @@
                 <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
             </tr>
             <tr>
+                <td>Game:</td>
+                <td><select id="games" name="gamesId" th:field="*{game}">
+                    <option th:each="game : ${games}" th:value="${game.getId()}" th:text="${game.getGame()}"></option>
+                </select> </td>
+            </tr>
+            <tr>
                 <td>
                     <button type="submit">Submit</button>
                 </td>

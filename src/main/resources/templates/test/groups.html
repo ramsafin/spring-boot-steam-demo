@@ -10,6 +10,7 @@
       class="no-js" lang=""> <!--<![endif]-->
 
 <head>
+    <title>Groups</title>
     <meta charset="utf-8" />
     <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -45,9 +46,9 @@
                     <nav>
                         <ul class="primary-nav">
                             <!--TODO insert proper links-->
-                            <li><a href="#">Home</a></li>
+                            <li><a th:href="@{/}">Home</a></li>
                             <li><a href="#">Friends</a></li>
-                            <li><a href="#">Groups</a></li>
+                            <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
                         </ul>
                         <ul class="member-actions">
@@ -78,20 +79,18 @@
         <div class="grouplistbox">
 
             <div class="search_form">
-                <form action="">
-
-                    <p>Поиск:<select class="search_form_select" name="hero[]">
-                        <option value="CSGO">по игре</option>
-                        <option selected="selected" value="Dota2 ">по названию</option>
-
+                <form action="#" method="post">
+                    <p>Поиск:<select class="search_form_select" name="search" path="search">
+                        <option value="game">по игре</option>
+                        <option selected="selected" value="name">по названию</option>
                     </select></p>
 
-                    <p>Сортировка:<select class="search_form_select" name="hero[]">
-                        <option value="CSGO">по дате</option>
-                        <option value="Dota2 ">по алфавиту</option>
-                        <option selected="selected" value="Dota2 ">по популярности</option>
+                    <p>Сортировка:<select class="search_form_select" name="sort">
+                        <option value="date">по дате</option>
+                        <option value="a">по алфавиту</option>
+                        <option selected="selected" value="popular">по популярности</option>
                     </select></p>
-                    <input type="text" placeholder="Type message and press enter..." />
+                    <input name="criteria" type="text" placeholder="Type message and press enter..." />
                 </form>
             </div>
 
@@ -103,9 +102,9 @@
                 <div th:each="group : ${groups}">
                     <div class="group_e">
                         <img src="img/ipad-device.png" alt="Фотография 1" />
-                        <p><a href="#features" th:text="${group.name}"></a></p>
-                        <span> iPad </span>
-                        <span>14200 participants</span>
+                        <p><a th:href="@{/group/{groupId}(groupId=${group.id})}" th:text="${group.name}"></a></p>
+                        <span th:text="${group.game}"></span>
+                        <span th:text="${group.getParticipantList().size()}"></span>
                     </div>
                 </div>
             </div>

@@ -2,11 +2,13 @@ package ru.kpfu.itis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.inject.internal.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -19,9 +21,9 @@ public class Chat implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    private Set<Message> messageSet = new HashSet<>();
+    private Set<Message> messageSet = new LinkedHashSet<>();
 
-    private Set<User> userSet = new HashSet<>();
+    private Set<User> userSet = new LinkedHashSet<>();
 
     private boolean isNew = true;
 
@@ -57,14 +59,17 @@ public class Chat implements Serializable {
         return updatedAt;
     }
 
+    @OrderBy("sentAt desc")
     @JsonProperty("messages")
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.JOIN)
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL /*, before @Fetch fetch = FetchType.EAGER*/)
     public Set<Message> getMessageSet() {
         return messageSet;
     }
 
     @JsonProperty("users")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    @Fetch(value = FetchMode.JOIN)
     public Set<User> getUserSet() {
         return userSet;
     }
@@ -102,9 +107,7 @@ public class Chat implements Serializable {
     @JsonProperty("lastMessage")
     public Message getLastMessage() {
         if (messageSet.isEmpty()) return null;
-
-        return messageSet.stream().sorted((m1, m2) -> m2.getSentAt()
-                .compareTo(m1.getSentAt())).findFirst().get();
+        return messageSet.iterator().hasNext() ? messageSet.iterator().next() : null;
     }
 
     @Override

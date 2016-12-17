@@ -19,4 +19,12 @@ public interface SpringGroupRepository extends JpaRepository<Group, Long> {
             "inner join g.participantList u " +
             "where u.id = :userid")
     Set<Group> findUsersGroups(@Param("userid") Long id);
+
+    @Query(value = "select * from groups g " +
+            "where g.group_name rlike ?1", nativeQuery = true)
+    Set<Group> findGroupsByName(@Param("name") String name);
+
+    @Query(value = "select g from Group g " +
+            "where g.game = :game")
+    Set<Group> findGroupsByGame(@Param("game") String game);
 }

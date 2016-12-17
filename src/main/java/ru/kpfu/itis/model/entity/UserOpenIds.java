@@ -19,7 +19,7 @@ public class UserOpenIds implements Serializable {
     }
 
     @Id
-    @Column(name = "openid_url")
+    @Column(name = "openid_url", length = 100)
     public String getOpenidUrl() {
         return openidUrl;
     }

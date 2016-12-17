@@ -11,6 +11,7 @@
         <div class="chat">
 
             <div th:each="chat : ${chats}">
+
                 <p><a th:href="@{/chat/{chat_id}(chat_id=${chat.id})}">Link to chat</a></p>
                 <h3 th:text="${chat.id}"></h3>
                 <p th:text="${chat.createdAt}"></p>
