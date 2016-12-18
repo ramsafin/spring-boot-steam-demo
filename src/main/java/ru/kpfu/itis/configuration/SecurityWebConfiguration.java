@@ -26,7 +26,7 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/resources/**", "/webjars/**", "/built/**", "/static/**").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
                 .openidLogin()
                 .loginPage("/login").permitAll()

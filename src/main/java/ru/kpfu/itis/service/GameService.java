@@ -25,7 +25,8 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-//    @PostConstruct
+
+    //@PostConstruct
     public List<Game> getAllGames() {
         List<Game> gameList = new ArrayList<>();
         String gamesURI = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/";
@@ -46,4 +47,13 @@ public class GameService {
         }
         return gameList;
     }
+
+    public List<Game> getAllGamesFromDB(){
+        return gameRepository.findAll();
+    }
+
+    public String findGameById(Long id){
+        return gameRepository.findGameById(id).getGame();
+    }
+
 }

@@ -11,4 +11,5 @@ import ru.kpfu.itis.model.entity.Game;
  */
 public interface GameRepository extends JpaRepository<Game, Long> {
 
+    Game findGameById(Long id);
 }

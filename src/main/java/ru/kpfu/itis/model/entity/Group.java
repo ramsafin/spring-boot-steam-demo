@@ -18,6 +18,8 @@ public class Group implements Serializable {
 
     private String description;
 
+    private String game;
+
     private User owner;
 
     private Set<User> participantList = new HashSet<>();
@@ -62,6 +64,14 @@ public class Group implements Serializable {
         this.description = description;
     }
 
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
     @ManyToOne
     public User getOwner() {
         return owner;
@@ -78,6 +88,14 @@ public class Group implements Serializable {
 
     public void setParticipantList(Set<User> participantList) {
         this.participantList = participantList;
+    }
+
+    public void addParticipant(User user){
+        participantList.add(user);
+    }
+
+    public void deleteParticipant(User user){
+        participantList.remove(user);
     }
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
