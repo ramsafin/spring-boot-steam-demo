@@ -8,7 +8,6 @@ import ru.kpfu.itis.repository.GameRepository;
 import ru.kpfu.itis.utils.GsonParser;
 import ru.kpfu.itis.utils.HttpClientGame;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,7 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
+
     //@PostConstruct
     public List<Game> getAllGames() {
         List<Game> gameList = new ArrayList<>();
@@ -37,10 +37,14 @@ public class GameService {
         } catch (ServerException e) {
             e.printStackTrace();
         }
-        //there is a troubles with saving emodji to DB.
-        List<Game> newGameList = gameList.subList(0, 20000);
-        newGameList.addAll(gameList.subList(21000, gameList.size() - 1));
-        gameRepository.save(newGameList);
+        try {
+            //there is a troubles with saving emodji to DB.
+            List<Game> newGameList = gameList.subList(0, 20000);
+            newGameList.addAll(gameList.subList(21000, gameList.size() - 1));
+            gameRepository.save(newGameList);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
         return gameList;
     }
 

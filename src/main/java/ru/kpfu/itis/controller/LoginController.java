@@ -10,9 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.model.dto.UserDTO;
-import ru.kpfu.itis.model.entity.Game;
 import ru.kpfu.itis.model.entity.User;
-import ru.kpfu.itis.service.GameService;
 import ru.kpfu.itis.service.UserService;
 
 import javax.validation.Valid;
