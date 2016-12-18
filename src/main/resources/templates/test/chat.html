@@ -84,10 +84,10 @@
 
             <div class="chat_inner">
 
-                <div th:if="${lastChat != null}">
+                <div th:if="${lastChat == null}">
 
                     <div class="chat_in clearfix">
-                        <span class="message">Hello</span>
+                        <span class="message" th:inline="text">This is a [[${user.fullName}]]</span>
                         <span class="author">By somebody to you at 13:30</span>
                     </div>
 
