@@ -99,6 +99,7 @@ public class GroupController {
         User user = userService.findUserByToken(principal.getName());
         map.put("user",user);
         map.put("groups", groups);
+        map.put("my", false);
         return "groups";
     }
 

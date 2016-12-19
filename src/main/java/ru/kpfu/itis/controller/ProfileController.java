@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.SpringUserRepository;
 
@@ -37,5 +38,20 @@ public class ProfileController {
         }
 
         return "profile";
+    }
+
+
+    @GetMapping("/profile/{id}")
+    public String userProfile(@PathVariable("id") Long id, ModelMap model) {
+
+        User user = userRepository.findUserById(id);
+
+        if (user != null) {
+            model.addAttribute("user", user);
+            model.addAttribute("games", user.getGamesSet());
+            model.addAttribute("groups", user.getGroupsList());
+        }
+
+        return "userProfile";
     }
 }

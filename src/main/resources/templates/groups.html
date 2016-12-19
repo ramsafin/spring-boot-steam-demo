@@ -17,7 +17,7 @@
     <div class="container">
         <div class="grouplistbox">
 
-            <div th:if="${my eq false}">
+            <div th:if="${my == false}">
                 <div class="search_form">
                     <form action="#" method="post">
                         <p>Поиск:<select class="search_form_select" name="search" path="search">
@@ -30,7 +30,7 @@
                             <option value="a">по алфавиту</option>
                             <option selected="selected" value="popular">по популярности</option>
                         </select></p>
-                        <input name="criteria" type="text" placeholder="Type message and press enter..." />
+                        <input name="criteria" type="text" placeholder="Type group name and press enter..." />
                     </form>
                 </div>
 
@@ -40,13 +40,12 @@
 
             <!--Список групп-->
             <div class="grouplistbox_inner">
-                <!--Меняйте как хотите, поля свои и т.п.-->
                 <div th:each="group : ${groups}">
                     <div class="group_e">
                         <img src="img/ipad-device.png" alt="Фотография 1"/>
-                        <p><a th:href="@{/group/{groupId}(groupId=${group.id})}" th:text="${group.name}"></a></p>
-                        <span th:text="${group.game}"></span>
-                        <span th:text="${group.getParticipantList().size()}"></span>
+                        <p><a th:href="@{/group/{groupId}(groupId=${group.id})}" th:inline="text">Group : [[${group.name}]]</a></p>
+                        <span th:inline="text">Game : [[${group.game}]]</span>
+                        <span th:inline="text">Members : [[${group.getParticipantList().size() + 1}]]</span>
                     </div>
                 </div>
             </div>
