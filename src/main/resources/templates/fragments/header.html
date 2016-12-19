@@ -27,7 +27,20 @@
                         </ul>
                     </li>
                 </nav>
+            </nav>
 
+            <nav sec:authorize="isAnonymous()">
+                <ul class="member-actions">
+                    <form name="form" th:action="@{/login/openid}" method="post">
+
+                        <div id="openid_input_area">
+                            <input id="openid_identifier" name="openid_identifier" type="hidden"
+                                   value="http://steamcommunity.com/openid"/>
+                            <input id="openid_submit" type="image" th:src="@{/globalheader_logo.png}"/>
+                        </div>
+
+                    </form>
+                </ul>
             </nav>
 
         </div>

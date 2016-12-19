@@ -51,7 +51,7 @@
             </div>
 
             <div class="profile_games">
-                <h3 th:inline="text">Random Games ([[${game_count}]])</h3>
+                <h3 th:inline="text">My Steam games ([[${game_count}]])</h3>
                 <hr/>
                 <div th:if="${games != null and !#sets.isEmpty(games)}" th:each="g : ${games}" class="roundcorner">
                     <a th:text="${g.game}" href="#"></a>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="profile_groups">
-                <h3 th:inline="text">Groups ([[${group_count}]])</h3>
+                <h3 th:inline="text">My Groups ([[${group_count}]])</h3>
                 <hr/>
 
                 <div th:if="${groups != null and !#sets.isEmpty(groups)}" th:each="gr : ${groups}" class="roundcorner">

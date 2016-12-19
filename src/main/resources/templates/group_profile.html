@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="fragments/head :: head (pageTitle='Group :: profile')">
@@ -8,7 +9,8 @@
 <body id="top">
 
 <section class="navigation">
-    <header th:include="fragments/header :: header"></header>
+    <header th:include="fragments/header :: header" >
+    </header>
 </section>
 
 <div class="container">
@@ -19,12 +21,27 @@
                 <img src="img/piq_278240_400x400.png" alt="Фотография 1"/>
                 <span th:text="${group.game}"></span>
                 <span th:text="${group.description}"></span>
+                <div th:if="${isAdmin eq false}">
+                    <!--This user has been subscribed already?-->
+                    <!--No-->
+                    <div th:if="${subscribed eq false}">
+                        <a th:href="@{/group/{groupId}/subscribe(groupId=${group.id})}">
+                            <button type="submit">Subscribe</button>
+                        </a>
+                    </div>
+                    <!--Yes-->
+                    <div th:if="${subscribed eq true}">
+                        <a th:href="@{/group/{groupId}/unsubscribe(groupId=${group.id})}">
+                            <button type="submit">Unsubscribe</button>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="group_profile_frends">
                 <h3 th:text="${group.getParticipantList().size()}"></h3>
                 <div th:each="subscriber: ${subscribers}">
                     <div class="roundcorner">
-                        <img th:src="${subscriber.avatarUrl}"/>
+                        <img src="#" th:src="${subscriber.avatarUrl}"/>
                         <a th:href="@{/user/{userId}(userId=${subscriber.id})}" th:text="${subscriber.fullName}"></a>
                     </div>
                 </div>
@@ -32,6 +49,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="group_profile_container2">
     <div class="search_form">
@@ -62,18 +80,26 @@
     </div>
 </section>
 
-<section class="to-top">
+<footer>
     <div class="container">
         <div class="row">
-            <div class="to-top-wrap">
-                <a href="#top" class="top"><i class="fa fa-angle-up"></i></a>
+            <div class="col-md-7">
+                <div class="footer-links">
+                    <ul class="footer-group">
+                        <li>
+                            <a href="http://steamcommunity.com/">
+                                <img src="img/steam.png"/>
+                            </a>
+                        </li>
+                    </ul>
+                    <p>Copyright © 2016 <a href="#">I
+                        TIS The AA-Team</a><br/><a href="#">Licence</a> | Crafted with <span
+                            class="fa fa-heart pulse2"></span> by <a href="https://vk.com/id147280017"></a>.</p>
+                </div>
             </div>
+
         </div>
     </div>
-</section>
-
-<footer th:include="fragments/footer :: footer">
-    <!--footer-->
 </footer>
 
 <script th:src="@{js/vendor/jquery-1.11.2.min.js}"></script>

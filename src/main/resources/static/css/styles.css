@@ -169,8 +169,8 @@ Chat Styles
 
     position: relative; /* Относительное позиционирование */
     float: left; /* Выравнивание по левому краю с обтеканием */
-    margin-top: 15px; /* Отступ справа */
-    padding-bottom: 20px;
+    margin-top: 10px; /* Отступ справа */
+    padding-bottom: 10px;
     margin-left: 10px;
     align: top;
     width: 100%;
@@ -203,7 +203,7 @@ Chat Styles
 
   text-align:top;
   color:#fff;
-  font-size:16px;
+  font-size:14px;
   text-transform:uppercase;
   line-height:1em;
   padding:10px 10px;

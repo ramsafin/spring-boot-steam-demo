@@ -54,7 +54,7 @@ public class GroupController {
             map.put("subscribers", participants);
             map.put("posts", posts);
         }
-        return "test/group_profile";
+        return "group_profile";
     }
 
 

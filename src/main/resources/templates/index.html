@@ -2,7 +2,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="fragments/head :: head (pageTitle='Home')">
+<head th:include="fragments/head :: head (pageTitle='Index')">
     <!--HEAD (links, meta, etc.)-->
 </head>
 
@@ -11,7 +11,9 @@
 <section class="hero">
 
     <section class="navigation">
-        <header th:include="fragments/header :: header"></header>
+        <header th:include="fragments/header :: header" >
+
+        </header>
     </section>
 
     <div class="container">
