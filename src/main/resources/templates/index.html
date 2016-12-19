@@ -48,7 +48,7 @@
 
                             <li><a href="#">Home</a></li>
                             <li><a href="#">Friends</a></li>
-                            <li><a href="#">Groups</a></li>
+                            <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
                         </ul>
 
@@ -68,7 +68,7 @@
                             <li>
                                 <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>
                                 <ul>
-                                    <li><a href="#">Groups</a></li>
+                                    <li><a href="#" th:href="@{/groups/my}">Groups</a></li>
                                     <li><a href="#">Friends</a></li>
                                     <li><a th:href="@{/dialogs}">Dialogs</a></li>
                                 </ul>

@@ -33,7 +33,7 @@
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 
-<body id="top">
+<body id="top" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -43,31 +43,41 @@
     <section class="navigation">
         <header>
             <div class="header-content">
-                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo" /></a></div>
+                <div class="logo"><a href="#"><img src="/img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
                 <div class="header-nav">
                     <nav>
-                        <ul class="primary-nav">
-                            <!--TODO insert proper links-->
-                            <li><a th:href="@{/}">Home</a></li>
+                        <ul sec:authorize="!isAnonymous()" class="primary-nav">
+
+                            <li><a href="#">Home</a></li>
                             <li><a href="#">Friends</a></li>
-                            <li><a th:href="@{/groups}">Groups</a></li>
+                            <li><a href="#">Groups</a></li>
                             <li><a href="#">Players</a></li>
                         </ul>
-                        <ul class="member-actions">
+
+                        <ul sec:authorize="isAnonymous()" class="member-actions">
+                            <form name="form" th:action="@{/login/openid}" method="post">
+
+                                <div id="openid_input_area">
+                                    <input id="openid_identifier" name="openid_identifier" type="hidden"
+                                           value="http://steamcommunity.com/openid"/>
+                                    <input id="openid_submit" type="image" src="/globalheader_logo.png"/>
+                                </div>
+
+                            </form>
                         </ul>
-                        <nav class="menu">
-                            <li><a href="#"> My name</a>
 
+                        <nav sec:authorize="!isAnonymous()" class="menu">
+                            <li>
+                                <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>
                                 <ul>
-                                    <li><a href="#">My Profile</a></li>
-                                    <li><a href="#">My Groups</a></li>
-                                    <li><a href="#">My Friends</a></li>
-                                    <!--TODO связаться с нами, написать нам-->
-                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#" th:href="@{/profile}">Profile</a></li>
+                                    <li><a href="#" th:href="@{/groups/my}">Groups</a></li>
+                                    <li><a href="#" th:href="@{/dialogs}">Dialogs</a></li>
+                                    <li><a href="#">Friends</a></li>
                                 </ul>
-
                             </li>
                         </nav>
+
                     </nav>
                 </div>
                 <div class="navicon">
@@ -80,20 +90,22 @@
     <div class="container">
         <div class="grouplistbox">
 
-            <div class="search_form">
-                <form action="#" method="post">
-                    <p>Поиск:<select class="search_form_select" name="search" path="search">
-                        <option value="game">по игре</option>
-                        <option selected="selected" value="name">по названию</option>
-                    </select></p>
+            <div th:if="${my eq false}">
+                <div class="search_form">
+                    <form action="#" method="post">
+                        <p>Поиск:<select class="search_form_select" name="search" path="search">
+                            <option value="game">по игре</option>
+                            <option selected="selected" value="name">по названию</option>
+                        </select></p>
 
-                    <p>Сортировка:<select class="search_form_select" name="sort">
-                        <option value="date">по дате</option>
-                        <option value="a">по алфавиту</option>
-                        <option selected="selected" value="popular">по популярности</option>
-                    </select></p>
-                    <input name="criteria" type="text" placeholder="Type message and press enter..." />
-                </form>
+                        <p>Сортировка:<select class="search_form_select" name="sort">
+                            <option value="date">по дате</option>
+                            <option value="a">по алфавиту</option>
+                            <option selected="selected" value="popular">по популярности</option>
+                        </select></p>
+                        <input name="criteria" type="text" placeholder="Type message and press enter..." />
+                    </form>
+                </div>
             </div>
 
             <h3>Groups</h3>

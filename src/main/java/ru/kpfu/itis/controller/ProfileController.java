@@ -36,6 +36,6 @@ public class ProfileController {
             model.addAttribute("game_count", user.getGamesSet().size());
         }
 
-        return "test/profile";
+        return "profile";
     }
 }

@@ -34,7 +34,7 @@ public class IndexController {
             model.addAttribute("msg", "Failed to login through Steam");
         }
 
-        return "test/index";
+        return "index";
     }
 
 }

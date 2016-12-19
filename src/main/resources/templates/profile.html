@@ -39,23 +39,18 @@
 <![endif]-->
 
 <section class="hero">
-
     <section class="navigation">
         <header>
             <div class="header-content">
-
                 <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
-
                 <div class="header-nav">
                     <nav sec:authorize="isAuthenticated()">
-
                         <ul class="primary-nav">
                             <!--all groups-->
                             <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
                             <li><a href="#">Contact Us</a></li>
                         </ul>
-
                         <nav sec:authorize="!isAnonymous()" class="menu">
                             <li>
                                 <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>

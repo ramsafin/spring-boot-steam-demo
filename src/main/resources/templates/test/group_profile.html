@@ -32,72 +32,74 @@
 
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
-<body id="top">
+<body id="top" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <!--[if lt IE 8]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <section class="navigation">
         <header>
             <div class="header-content">
-                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo" /></a></div>
+
+                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
+
                 <div class="header-nav">
-                    <nav>
+                    <nav sec:authorize="isAuthenticated()">
+
                         <ul class="primary-nav">
-                            <!--TODO insert proper links-->
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Friends</a></li>
-                            <li><a href="#">Groups</a></li>
+                            <!--all groups-->
+                            <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
+                            <li><a href="#">Contact Us</a></li>
                         </ul>
-                        <ul class="member-actions">
-                        </ul>
-                        <nav class="menu">
-                            <li><a href="#"> My name</a>
 
+                        <nav sec:authorize="!isAnonymous()" class="menu">
+                            <li>
+                                <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>
                                 <ul>
-                                    <li><a href="#">My Profile</a></li>
-                                    <li><a href="#">My Groups</a></li>
-                                    <li><a href="#">My Friends</a></li>
-                                    <!--TODO связаться с нами, написать нам-->
-                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#" th:href="@{/profile}">Profile</a></li>
+                                    <li><a href="#" th:href="@{/groups/my}">Groups</a></li>
+                                    <li><a href="#" th:href="@{/dialogs}">Dialogs</a></li>
+                                    <li><a href="#">Friends</a></li>
                                 </ul>
-
                             </li>
                         </nav>
                     </nav>
                 </div>
+
                 <div class="navicon">
                     <a class="nav-toggle" href="#"><span></span></a>
                 </div>
+
             </div>
         </header>
     </section>
         <div class="container">
              <div class="group_profile_container">
                  <div class="group_profile__inner">
-                    <h3>Group name</h3>
+                    <h3 th:text="${group.name}"></h3>
                             <div class="group_profile">
                                 <img src="img/piq_278240_400x400.png" alt="Фотография 1" />
-                                <span> Игра: Dota 3</span>
-                                <span> О группе: играем в какую то херню, paragon лучше!)
-                                      ывапролдлорпавы
-                                      вапролдорпавЫ
-                                      ывапролдорпамсвчЯ
-                                      чсампролдлорпмаСЧ
-                                      чсампролорпавЫ
-                                      ывапролоРПАВы
-                                      йцукенгшщ
-                                      йцукенгшщ</span>
+                                <span th:text="${group.game}"></span>
+                                <span th:text="${group.description}"></span>
+                                <div th:if="${isAdmin eq false}">
+                                    <!--This user has been subscribed already?-->
+                                    <!--No-->
+                                    <div th:if="${subscribed eq false}">
+                                        <a th:href="@{/group/{groupId}/subscribe(groupId=${group.id})}"><button type="submit">Subscribe</button></a>
+                                    </div>
+                                    <!--Yes-->
+                                    <div th:if="${subscribed eq true}">
+                                        <a th:href="@{/group/{groupId}/unsubscribe(groupId=${group.id})}"><button type="submit">Unsubscribe</button></a>
+                                    </div>
+                                </div>
                             </div>
                      <div class="group_profile_frends">
-                         <h3>subscribers: 34</h3>
-                         <div class="roundcorner">
-                             <img src="img/mani.jpg" alt="Фотография 1" />
-                             <a href="#features">Rsmi8o</a>
-                         </div>
-                         <div class="roundcorner">
-                             <img src="img/130.jpg" alt="Фотография 1" />
-                             <a href="#features">Danya</a>
+                         <h3 th:text="${group.getParticipantList().size()}"></h3>
+                         <div th:each="subscriber: ${subscribers}">
+                             <div class="roundcorner">
+                                 <img th:src="${subscriber.avatarUrl}" />
+                                 <a th:href="@{/user/{userId}(userId=${subscriber.id})}" th:text="${subscriber.fullName}"></a>
+                             </div>
                          </div>
                      </div>
                  </div>
@@ -105,27 +107,18 @@
         </div>
     <div class="group_profile_container2">
         <div class="search_form">
-            <form action="">
-                <input type="text" placeholder="Type post and press enter..." />
-            </form>
-        </div>
-        <div class="group_profile_posts">
-            <div class="group_profile_posts_e">
-                <h3>Азаза</h3>
-                <img src="img/piq_278240_400x400.png" alt="Фотография 1" />
-                <span> smdnfkdnckjbjvhgvmgvku</span>
-            </div>
-            <div class="group_profile_posts_e">
-                <h3>macbook</h3>
-                <img src="img/macbook-pro.png" alt="Фотография 1" />
-                <span> smdnfkdnckjbjvhgvmgvku</span>
+            <div th:if="${isAdmin eq true}">
+                <form th:action="@{/group/{groupId}/new_post(groupId=${group.id})}" th:object="${post}" method="post">
+                    <input type="text" th:field="*{body}" placeholder="Type post and press enter..." />
+                </form>
             </div>
         </div>
         <div class="group_profile_posts">
-            <div class="group_profile_posts_e">
-                <h3>Азаза</h3>
-                <img src="img/piq_278240_400x400.png" alt="Фотография 1" />
-                <span> smdnfkdnckjbjvhgvmgvku</span>
+            <div th:each="post : ${posts}">
+                <div class="group_profile_posts_e">
+                    <h3 th:text="${post.date}"></h3>
+                    <span th:text="${post.body}"></span>
+                </div>
             </div>
         </div>
     </div>
