@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <title tiles:fragment="title">Show : Index</title>
+    <title th:fragment="title">Show : Index</title>
 </head>
 <body>
-<div tiles:fragment="content">
+<div th:fragment="content">
     <h1>Show page</h1>
+
+    <div sec:authorize="isAuthenticated()">
+        Logged user: <span sec:authentication="name">Bob</span><br/>
+        Roles: <span sec:authentication="principal.authorities">Nope</span>
+    </div>
+
+    <div sec:authorize="isAnonymous()">
+        You are an anonymous user! Please, log in <a th:href="@{/login}">here.</a>
+    </div>
+
 </div>
 </body>
 </html>
