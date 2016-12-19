@@ -532,7 +532,7 @@ Profile
   width:90%;
   height: 100%;
   opacity: 0.7;
-  font-size:12px;
+  font-size:14pt;
   font-family:sans-serif;
   margin:auto;
   padding:160px 0 0 0;
@@ -543,7 +543,7 @@ Profile
   height: 100%;
   overflow: hidden;
   opacity: 0.7;
-  font-size:12px;
+  font-size:16px;
   font-family:sans-serif;
   margin:auto;
 }
@@ -599,7 +599,7 @@ width: 0px;
 }
 
 .profile img{
-  width: 180px;
+  width: 160px;
     height: 180px;
       text-align:top;
       margin-right: 40px; 

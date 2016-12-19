@@ -42,31 +42,27 @@
     <section class="navigation">
         <header>
             <div class="header-content">
-                <div class="logo"><a href="#"><img src="/img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
+                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
                 <div class="header-nav">
-                    <nav>
+                    <nav sec:authorize="isAuthenticated()">
                         <ul class="primary-nav">
-                            <!--TODO insert proper links-->
-                            <li><a href="#">Home</a></li>
                             <li><a href="#">Friends</a></li>
-                            <li><a href="#">Groups</a></li>
+                            <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
                         </ul>
-                        <ul class="member-actions">
-                        </ul>
-                        <nav class="menu">
-                            <li><a href="#"> My name</a>
 
+
+                        <nav sec:authorize="!isAnonymous()" class="menu">
+                            <li>
+                                <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>
                                 <ul>
-                                    <li><a href="#">My Profile</a></li>
-                                    <li><a href="#">My Groups</a></li>
-                                    <li><a href="#">My Friends</a></li>
-                                    <!--TODO связаться с нами, написать нам-->
-                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#">Groups</a></li>
+                                    <li><a href="#">Friends</a></li>
+                                    <li><a th:href="@{/dialogs}">Dialogs</a></li>
                                 </ul>
-
                             </li>
                         </nav>
+
                     </nav>
                 </div>
                 <div class="navicon">
@@ -84,7 +80,7 @@
 
             <div class="chat_inner">
 
-                <div th:if="${lastChat == null}">
+                <div th:if="${lastChat != null}">
 
                     <div class="chat_in clearfix">
                         <span class="message" th:inline="text">This is a [[${user.fullName}]]</span>
@@ -100,7 +96,7 @@
 
             </div>
 
-            <div th:if="${lastChat}" class="form">
+            <div th:if="${lastChat != null}" class="form">
                 <form id="message_form" action="#" accept-charset="utf-8">
                     <input type="text" id="message_text" name="message" placeholder="Type message and press enter..."/>
                 </form>

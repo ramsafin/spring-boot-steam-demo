@@ -7,8 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import ru.kpfu.itis.model.handler.CustomAuthenticationSuccessHandler;
 import ru.kpfu.itis.service.CustomUserDetailsService;
 
 @EnableWebSecurity
@@ -26,13 +24,11 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/resources/**", "/webjars/**", "/built/**", "/static/**").permitAll()
-//                .anyRequest().authenticated()
                 .and()
                 .openidLogin()
-                .loginPage("/login").permitAll()
+                .loginPage("/").permitAll()
                 .authenticationUserDetailsService(authenticationUserDetailsService())
-                .failureUrl("/login?fail")
-                .successHandler(authenticationSuccessHandler())
+                .failureUrl("/?fail")
                 .and()
                 .csrf().disable();
     }
@@ -40,11 +36,6 @@ public class SecurityWebConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationUserDetailsService<OpenIDAuthenticationToken> authenticationUserDetailsService() {
         return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
     }
 
 }
