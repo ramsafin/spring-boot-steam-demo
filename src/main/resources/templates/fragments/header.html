@@ -1,0 +1,37 @@
+<header th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+    <div class="header-content">
+
+        <div class="logo"><a href="#"><img src="#" th:src="@{/img/gamehub_logo_straight.png}" alt="GameHub logo"/></a>
+        </div>
+
+        <div class="header-nav">
+
+            <nav sec:authorize="isAuthenticated()">
+
+                <ul class="primary-nav">
+                    <li><a href="#" th:href="@{/groups}">Groups</a></li>
+                    <li><a href="#" th:href="@{/search/users}">Players</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+
+                <nav class="menu">
+                    <li>
+                        <a href="#" th:href="@{/profile}" th:inline="text">You, [[${user.steamNickname}]]</a>
+                        <ul>
+                            <!--TODO add proper link-->
+                            <li><a href="#" th:href="@{/groups/my}">Groups</a></li>
+                            <li><a href="#" th:href="@{/dialogs}">Dialogs</a></li>
+                            <li><a href="#">Friends</a></li>
+                        </ul>
+                    </li>
+                </nav>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+</header>

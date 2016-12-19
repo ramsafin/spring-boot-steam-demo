@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
-<head>
-    <title tiles:fragment="title">New Group</title>
-</head>
-<body>
-<div tiles:fragment="content">
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head th:include="fragments/head :: head (pageTitle='Home')">
+    <!--HEAD (links, meta, etc.)-->
+</head>
+
+<body>
+
+<div>
     <h1>Create group:</h1>
 
     <form action="#" th:object="${group}" method="post">
@@ -25,7 +27,7 @@
                 <td>Game:</td>
                 <td><select id="games" name="gamesId" th:field="*{game}">
                     <option th:each="game : ${games}" th:value="${game.getId()}" th:text="${game.getGame()}"></option>
-                </select> </td>
+                </select></td>
             </tr>
             <tr>
                 <td>

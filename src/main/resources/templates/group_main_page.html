@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
-<head>
-    <title tiles:fragment="title">Group Page</title>
+
+<head th:include="fragments/head :: head (pageTitle='Home')">
+    <!--HEAD (links, meta, etc.)-->
 </head>
+
 <body>
-<div tiles:fragment="content">
+
+<div>
 
     <h1 th:text="${group.name}"></h1>
 
@@ -36,11 +39,15 @@
         <!--This user has been subscribed already?-->
         <!--No-->
         <div th:if="${subscribed eq false}">
-            <a th:href="@{/group/{groupId}/subscribe(groupId=${group.id})}"><button type="submit">Subscribe</button></a>
+            <a th:href="@{/group/{groupId}/subscribe(groupId=${group.id})}">
+                <button type="submit">Subscribe</button>
+            </a>
         </div>
         <!--Yes-->
         <div th:if="${subscribed eq true}">
-            <a th:href="@{/group/{groupId}/unsubscribe(groupId=${group.id})}"><button type="submit">Unsubscribe</button></a>
+            <a th:href="@{/group/{groupId}/unsubscribe(groupId=${group.id})}">
+                <button type="submit">Unsubscribe</button>
+            </a>
         </div>
     </div>
 
@@ -79,5 +86,30 @@
         </table>
     </div>
 </div>
+
+
+<section class="to-top">
+    <div class="container">
+        <div class="row">
+            <div class="to-top-wrap">
+                <a href="#top" class="top"><i class="fa fa-angle-up"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:include="fragments/footer :: footer">
+    <!--footer-->
+</footer>
+
+<script th:src="@{js/vendor/jquery-1.11.2.min.js}"></script>
+<script th:src="@{bower_components/retina.js/dist/retina.js}"></script>
+<script th:src="@{js/jquery.fancybox.pack.js}"></script>
+<script th:src="@{js/vendor/bootstrap.min.js}"></script>
+<script th:src="@{js/scripts.js}"></script>
+<script th:src="@{js/jquery.flexslider-min.js}"></script>
+<script th:src="@{bower_components/classie/classie.js}"></script>
+<script th:src="@{bower_components/jquery-waypoints/lib/jquery.waypoints.min.js}"></script>
+
 </body>
 </html>

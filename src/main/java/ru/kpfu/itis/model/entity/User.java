@@ -133,7 +133,6 @@ public class User implements UserDetails {
         groupsList.remove(group);
     }
 
-    //TODO if exceptions, then invoke getCreatedGroups to your entity, it will select it
     @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Group> getCreatedGroups() {
