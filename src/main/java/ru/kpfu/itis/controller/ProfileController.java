@@ -8,7 +8,6 @@ import ru.kpfu.itis.model.entity.User;
 import ru.kpfu.itis.repository.SpringUserRepository;
 
 import java.security.Principal;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProfileController {
@@ -30,9 +29,11 @@ public class ProfileController {
             User user = userRepository.findByOpenid(openId);
             model.addAttribute("user", user);
             model.addAttribute("openId", PROFILE_URL + openId.substring(openId.lastIndexOf('/'), openId.length()));
-            model.addAttribute("games", user.getGamesSet().stream().limit(5).collect(Collectors.toSet()));
-            model.addAttribute("groups", user.getGroupsList().stream().limit(5).collect(Collectors.toSet()));
+            model.addAttribute("games", user.getGamesSet());
+            model.addAttribute("groups", user.getGroupsList());
             model.addAttribute("avatar", user.getAvatarUrl());
+            model.addAttribute("group_count", user.getGroupsList().size());
+            model.addAttribute("game_count", user.getGamesSet().size());
         }
 
         return "test/profile";

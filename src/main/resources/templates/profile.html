@@ -19,8 +19,8 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" href="../../static/favicon-32x32.png" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="../../static/favicon-16x16.png" sizes="16x16"/>
+    <link rel="icon" type="image/png" href="../static/favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="../static/favicon-16x16.png" sizes="16x16"/>
     <link rel="stylesheet" href="/css/normalize.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/jquery.fancybox.css"/>
@@ -53,6 +53,7 @@
                             <!--all groups-->
                             <li><a th:href="@{/groups}">Groups</a></li>
                             <li><a href="#">Players</a></li>
+                            <li><a href="#">Contact Us</a></li>
                         </ul>
 
                         <nav sec:authorize="!isAnonymous()" class="menu">
@@ -114,7 +115,7 @@
             </div>
 
             <div class="profile_games">
-                <h3>Games</h3>
+                <h3 th:inline="text">Random Games ([[${game_count}]])</h3>
                 <hr/>
                 <div th:if="${games != null and !#sets.isEmpty(games)}" th:each="g : ${games}" class="roundcorner">
                     <a th:text="${g.game}" href="#"></a>
@@ -122,11 +123,17 @@
             </div>
 
             <div class="profile_groups">
-                <h3>Groups: Never will be</h3>
+                <h3 th:inline="text">Recent groups ([[${group_count}]])</h3>
                 <hr/>
+                <!--<div th:if="${groups != null and !#sets.isEmpty(groups)}" th:each="gr : ${groups}" class="roundcorner">-->
+                <!--<a href="#" th:href="@{/group/{id}(id=${gr.id})}" th:text="${gr.name}"></a>-->
+                <!--</div>-->
+
+
                 <div th:if="${groups != null and !#sets.isEmpty(groups)}" th:each="gr : ${groups}" class="roundcorner">
-                    <a href="#" th:text="${gr.name}"></a>
+                    <a href="#" th:href="@{/group/{id}(id=${gr.id})}" th:text="${gr.name}"></a>
                 </div>
+
 
             </div>
         </div>

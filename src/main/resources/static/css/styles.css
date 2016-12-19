@@ -169,11 +169,12 @@ Chat Styles
 
     position: relative; /* Относительное позиционирование */
     float: left; /* Выравнивание по левому краю с обтеканием */
-    margin-top: 20px; /* Отступ справа */
+    margin-top: 15px; /* Отступ справа */
+    padding-bottom: 20px;
     margin-left: 10px;
     align: top;
     width: 100%;
-  border-bottom:1px solid #304152;
+  border-bottom:2px solid #304152;
   overflow-x: hidden;
  overflow-y: hidden;
  

@@ -98,7 +98,7 @@ public class GroupController {
     public String groupsList(ModelMap map){
         List<Group> groups = groupService.findAll();
         map.put("groups", groups);
-        return "test/groups";
+        return "groups";
     }
 
     @PostMapping("/groups")
@@ -117,37 +117,27 @@ public class GroupController {
         }
         switch (sortParam){
             case "date":
-                Collections.sort(groups, new Comparator<Group>(){
-                    public int compare(Group group1, Group group2){
-                        return group1.getCreatedTime().compareTo(group2.getCreatedTime());
-                    }
-                });
+                groups.sort(Comparator.comparing(Group::getCreatedTime));
                 break;
             case "a":
-                Collections.sort(groups, new Comparator<Group>(){
-                    public int compare(Group group1, Group group2){
-                        return group1.getName().compareTo(group2.getName());
-                    }
-                });
+                groups.sort(Comparator.comparing(Group::getName));
                 break;
             case "popular":
-                Collections.sort(groups, new Comparator<Group>(){
-                    public int compare(Group group1, Group group2){
-                        if(group1.getParticipantList().size() == group2.getParticipantList().size()){
-                            return 0;
-                        }else {
-                            if (group1.getParticipantList().size() > group2.getParticipantList().size()) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
+                groups.sort((group1, group2) -> {
+                    if (group1.getParticipantList().size() == group2.getParticipantList().size()) {
+                        return 0;
+                    } else {
+                        if (group1.getParticipantList().size() > group2.getParticipantList().size()) {
+                            return 1;
+                        } else {
+                            return -1;
                         }
                     }
                 });
 
         }
         map.put("groups", groups);
-        return "test/groups";
+        return "groups";
     }
 
 }

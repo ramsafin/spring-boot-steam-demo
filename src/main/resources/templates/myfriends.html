@@ -15,8 +15,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="../../static/favicon-32x32.png" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="../../static/favicon-16x16.png" sizes="16x16"/>
+    <link rel="icon" type="image/png" href="../static/favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="../static/favicon-16x16.png" sizes="16x16"/>
     <link rel="stylesheet" href="css/normalize.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery.fancybox.css">
@@ -33,16 +33,6 @@
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
-
-<!--
-
-    TODO : Думаю, лучше будет сделать 2 странички поиска (дял групп и пользователей (наших))
-    TODO : это придурок даже темплейты назвал хз как, P.S. Айнур, ты молодец
-    TODO : тут, в общем, сами разбирайтесь
-
--->
-
-
 <section class="hero">
 
     <section class="navigation">
@@ -83,15 +73,13 @@
     </section>
 
     <div class="container">
-
         <div class="grouplistbox">
 
             <div class="search_form">
 
-                <form action="#">
-
-                    <p>Поиск: <select class="search_form_select" name="hero[]">
-                        <option value="CS GO">по игре</option>
+                <form action="">
+                    <p>Поиск:<select class="search_form_select" name="hero[]">
+                        <option value="CSGO">по игре</option>
                         <option selected value="Dota2 ">по названию</option>
 
                     </select></p>
@@ -108,67 +96,28 @@
                         <option value="Dota2 ">Китай</option>
                         <option selected value="Dota2 ">Все</option>
                     </select></p>
-
                     <input type="text" placeholder="Type message and press enter...">
+
 
                 </form>
             </div>
 
-            <h3>Search Users</h3>
+            <h3>My friends</h3>
 
             <div class="grouplistbox_inner">
 
-
                 <div class="user_e">
                     <div class="user_e_button">
-                        <button class="button button_subscribe">Add as Friend</button>
+                        <button class="user_button user_subscribe">Remove from friends</button>
+                        <br>
+                        <button class="user_button user_subscribe">Send Message</button>
                     </div>
+
                     <img src="img/avatar.jpg" alt="Фотография 1">
                     <a href="#features">Neebower</a><br>
                     <span> Russian Federation</span>
-                    <br>
-                    <span>13 mutual friends</span>
 
                 </div>
-
-
-                <div class="user_e">
-                    <div class="user_e_button">
-                        <button class="button button_subscribe">Add as Friend</button>
-                    </div>
-                    <img src="img/avatar.jpg" alt="Фотография 1">
-                    <a href="#features">Neebower</a><br>
-                    <span> Russian Federation</span>
-                    <br>
-                    <span>13 mutual friends</span>
-
-                </div>
-
-                <div class="user_e">
-                    <div class="user_e_button">
-                        <button class="button button_subscribe">Add as Friend</button>
-                    </div>
-                    <img src="img/avatar.jpg" alt="Фотография 1">
-                    <a href="#features">Neebower</a><br>
-                    <span> Russian Federation</span>
-                    <br>
-                    <span>13 mutual friends</span>
-
-                </div>
-
-
-                <div class="user_e">
-                    <div class="user_e_button">
-                        <button class="button button_subscribe">Add as Friend</button>
-                    </div>
-                    <img src="img/avatar.jpg" alt="Фотография 1">
-                    <a href="#features">Neebower</a><br>
-                    <span> Russian Federation</span>
-                    <br>
-                    <span>13 mutual friends</span>
-
-                </div>
-
 
             </div>
         </div>
@@ -185,7 +134,6 @@
         </div>
     </div>
 </section>
-
 
 <footer>
     <div class="container">
