@@ -8,7 +8,7 @@ public class IndexController {
 
     @GetMapping(value = "/")
     public String index() {
-        return "show";
+        return "test/profile";
     }
 
 

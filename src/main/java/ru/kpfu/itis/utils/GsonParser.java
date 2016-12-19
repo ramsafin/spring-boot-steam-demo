@@ -5,10 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ru.kpfu.itis.model.entity.Game;
-import ru.kpfu.itis.model.entity.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import java.util.List;
  * Created by Daniel Shchepetov on 08.12.2016.
  */
 public class GsonParser {
+
     private JsonParser parser;
     private List<Game> gameList;
     private List<Long> gameIdList;
