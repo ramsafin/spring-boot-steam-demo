@@ -1,75 +1,16 @@
 <!doctype html>
-<!--[if lt IE 7]>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" class="no-js lt-ie9 lt-ie8 lt-ie7"
-      lang=""> <![endif]-->
-<!--[if IE 7]>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" class="no-js lt-ie9 lt-ie8"
-      lang=""> <![endif]-->
-<!--[if IE 8]>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" class="no-js lt-ie9"
-      lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" class="no-js" lang=""> <!--<![endif]-->
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title th:title="Chat"></title>
-    <meta name="description" content=""/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16"/>
-    <link rel="stylesheet" href="/css/normalize.min.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/jquery.fancybox.css"/>
-    <link rel="stylesheet" href="/css/flexslider.css"/>
-    <link rel="stylesheet" href="/css/styles.css"/>
-    <link rel="stylesheet" href="/css/queries.css"/>
-    <link rel="stylesheet" href="/css/etline-font.css"/>
-    <link rel="stylesheet" href="/bower_components/animate.css/animate.min.css"/>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
-    <script src="/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/head :: head (pageTitle=${#strings.concat('Dialogs :: ', user.steamNickname)})">
+    <!--HEAD (links, meta, etc.)-->
 </head>
 
 <body id="top">
-<!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
+
 <section class="hero">
 
     <section class="navigation">
-        <header>
-            <div class="header-content">
-                <div class="logo"><a href="#"><img src="img/gamehub_logo_straight.png" alt="Sedna logo"/></a></div>
-                <div class="header-nav">
-                    <nav sec:authorize="isAuthenticated()">
-                        <ul class="primary-nav">
-                            <li><a href="#">Friends</a></li>
-                            <li><a th:href="@{/groups}">Groups</a></li>
-                            <li><a href="#">Players</a></li>
-                        </ul>
-
-
-                        <nav sec:authorize="!isAnonymous()" class="menu">
-                            <li>
-                                <a href="#" th:inline="text">You, [[${user.steamNickname}]]</a>
-                                <ul>
-                                    <li><a href="#">Groups</a></li>
-                                    <li><a href="#">Friends</a></li>
-                                    <li><a th:href="@{/dialogs}">Dialogs</a></li>
-                                </ul>
-                            </li>
-                        </nav>
-
-                    </nav>
-                </div>
-                <div class="navicon">
-                    <a class="nav-toggle" href="#"><span></span></a>
-                </div>
-            </div>
-        </header>
+        <header th:include="fragments/header :: header"></header>
     </section>
 
     <div class="container">
@@ -140,38 +81,19 @@
     </div>
 </section>
 
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7">
-                <div class="footer-links">
-                    <ul class="footer-group">
-                        <li>
-                            <a href="http://steamcommunity.com/">
-                                <img src="/img/steam.png"/>
-                            </a>
-                        </li>
-                    </ul>
-                    <p>Copyright © 2016 <a href="#">ITIS The AA-Team</a>
-                        <br/>
-                        <a href="#">Licence</a> | Crafted with <span
-                                class="fa fa-heart pulse2"></span> by <a href="https://vk.com/id147280017">Айнур
-                            Зиннатов</a>.</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
+<footer th:include="fragments/footer :: footer">
+    <!--footer-->
 </footer>
 
-<script src="/js/vendor/jquery-1.11.2.min.js"></script>
-<script src="/bower_components/retina.js/dist/retina.js"></script>
-<script src="/js/jquery.fancybox.pack.js"></script>
-<script src="/js/vendor/bootstrap.min.js"></script>
-<script src="/js/scripts.js"></script>
-<script src="/js/jquery.flexslider-min.js"></script>
-<script src="/bower_components/classie/classie.js"></script>
-<script src="/bower_components/jquery-waypoints/lib/jquery.waypoints.min.js"></script>
+<script th:src="@{js/vendor/jquery-1.11.2.min.js}"></script>
+<script th:src="@{bower_components/retina.js/dist/retina.js}"></script>
+<script th:src="@{js/jquery.fancybox.pack.js}"></script>
+<script th:src="@{js/vendor/bootstrap.min.js}"></script>
+<script th:src="@{js/scripts.js}"></script>
+<script th:src="@{js/jquery.flexslider-min.js}"></script>
+<script th:src="@{bower_components/classie/classie.js}"></script>
+<script th:src="@{bower_components/jquery-waypoints/lib/jquery.waypoints.min.js}"></script>
+
 
 <script>
     $(document).ready(() => {

@@ -31,7 +31,6 @@ public class GroupController {
         this.postService = postService;
     }
 
-
     @GetMapping("/group/{id}")
     public String groupPageIndex(@PathVariable Long id, ModelMap map, Principal principal) {
         Group group = groupService.findById(id);

@@ -59,7 +59,7 @@ public class ChatController {
         modelMap.addAttribute("user", user);
         modelMap.addAttribute("id", user.getId());
 
-        return "test/chat";
+        return "chat";
     }
 
 }
