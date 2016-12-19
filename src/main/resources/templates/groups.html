@@ -8,29 +8,32 @@
 
 <body id="top">
 
-<section class="hero">
+  <section class="hero">
 
     <section class="navigation">
-        <header th:include="fragments/header :: header"></header>
+      <header th:include="fragments/header :: header"></header>
     </section>
 
     <div class="container">
         <div class="grouplistbox">
 
-            <div class="search_form">
-                <form action="#" method="post">
-                    <p>Поиск:<select class="search_form_select" name="search" path="search">
-                        <option value="game">по игре</option>
-                        <option selected="selected" value="name">по названию</option>
-                    </select></p>
+            <div th:if="${my eq false}">
+                <div class="search_form">
+                    <form action="#" method="post">
+                        <p>Поиск:<select class="search_form_select" name="search" path="search">
+                            <option value="game">по игре</option>
+                            <option selected="selected" value="name">по названию</option>
+                        </select></p>
 
-                    <p>Сортировка:<select class="search_form_select" name="sort">
-                        <option value="date">по дате</option>
-                        <option value="a">по алфавиту</option>
-                        <option selected="selected" value="popular">по популярности</option>
-                    </select></p>
-                    <input name="criteria" type="text" placeholder="Type message and press enter..."/>
-                </form>
+                        <p>Сортировка:<select class="search_form_select" name="sort">
+                            <option value="date">по дате</option>
+                            <option value="a">по алфавиту</option>
+                            <option selected="selected" value="popular">по популярности</option>
+                        </select></p>
+                        <input name="criteria" type="text" placeholder="Type message and press enter..." />
+                    </form>
+                </div>
+
             </div>
 
             <h3>Groups</h3>

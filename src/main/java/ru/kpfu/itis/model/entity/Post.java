@@ -11,8 +11,6 @@ public class Post implements Serializable {
 
     private Long id;
 
-    private String title;
-
     private String body;
 
     private Group group;
@@ -22,8 +20,7 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(String title, String body) {
-        this.title = title;
+    public Post(String body) {
         this.body = body;
     }
 
@@ -35,15 +32,6 @@ public class Post implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Column(name = "title")
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @Column(name = "body")

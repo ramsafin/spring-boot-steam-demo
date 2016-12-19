@@ -38,7 +38,6 @@ public class GroupController {
         Set<Post> posts = postService.getGroupPosts(group);
         if (principal != null) {
             User user = userService.findUserByToken(principal.getName());
-            Set<Group> userGroups = groupService.findUsersGroups(user);
             if (participants.contains(user)) {
                 map.put("subscribed", true);
             } else {
@@ -50,11 +49,12 @@ public class GroupController {
             } else {
                 map.put("isAdmin", false);
             }
+            map.put("user", user);
+            map.put("group", group);
+            map.put("subscribers", participants);
+            map.put("posts", posts);
         }
-        map.put("group", group);
-        map.put("subscribers", participants);
-        map.put("posts", posts);
-        return "group_main_page";
+        return "test/group_profile";
     }
 
 
@@ -89,13 +89,15 @@ public class GroupController {
             @PathVariable Long id
     ) {
         Group group = groupService.findById(id);
-        postService.addPost(new Post(post.getTitle(), post.getBody()), group);
+        postService.addPost(new Post(post.getBody()), group);
         return "redirect:/group/{id}";
     }
 
     @GetMapping("/groups")
-    public String groupsList(ModelMap map){
+    public String groupsList(ModelMap map, Principal principal){
         List<Group> groups = groupService.findAll();
+        User user = userService.findUserByToken(principal.getName());
+        map.put("user",user);
         map.put("groups", groups);
         return "groups";
     }
@@ -138,5 +140,18 @@ public class GroupController {
         map.put("groups", groups);
         return "groups";
     }
+
+    @GetMapping("/groups/my")
+    public String myGroups(ModelMap map, Principal principal){
+        if(principal != null){
+            User user = userService.findUserByToken(principal.getName());
+            Set<Group> groups = groupService.findUsersGroups(user);
+            map.put("user", user);
+            map.put("groups", groups);
+            map.put("my", true);
+        }
+        return "groups";
+    }
+
 
 }
