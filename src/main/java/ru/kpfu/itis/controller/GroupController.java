@@ -107,6 +107,7 @@ public class GroupController {
     public String groupsListPost(@RequestParam("search") String searchParam,
                                  @RequestParam("sort") String sortParam,
                                  @RequestParam("criteria") String criteria,
+                                 Principal principal,
                                  ModelMap map){
         List<Group> groups = new ArrayList<>();
         switch (searchParam){
@@ -138,9 +139,13 @@ public class GroupController {
                 });
 
         }
+        map.put("user", userService.findUserByToken(principal.getName()));
         map.put("groups", groups);
         return "groups";
     }
+
+
+
 
     @GetMapping("/groups/my")
     public String myGroups(ModelMap map, Principal principal){

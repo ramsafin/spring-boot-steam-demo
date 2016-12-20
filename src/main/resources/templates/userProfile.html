@@ -1,10 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!doctype html>
 
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragments/head :: head (pageTitle=${#strings.concat('Profile (', user.steamNickname).concat(')')})">
+    <!--HEAD (links, meta, etc.)-->
 </head>
-<body>
 
-    <!--TODO use profile-->
+<body id="top">
+
+<section class="hero">
+
+    <section class="navigation">
+        <header th:include="fragments/header :: header"></header>
+    </section>
+
+    <div class="container">
+
+        <div class="profile_container">
+
+            <div class="profile__inner">
+
+                <div th:if="${user != null}" class="profile">
+
+                    <img src="https://pp.vk.me/c625128/v625128786/4ba8c/MKGCesHjKDE.jpg"/>
+                    <div class="profile_name">
+                        <h3 th:text="${user.steamNickname}">Profile name</h3>
+                    </div>
+                    <br/>
+                    <span th:inline="text"> Name: [[${user.fullName}]]</span><br/>
+                    <span th:inline="text"> About myself: [[${user.aboutMe}]]</span><br/>
+                    <span> Steam profile: <a th:text="${user.steamNickname}" th:href="${openId}"></a></span>
+                    <br/>
+                    <div style="text-align: center">
+                        <a th:href="@{/dialogs}">
+                            <button style="color: #fff; background: rgba(69,77,85,0.98)" class="btn btn-sm">WRITE MESSAGE</button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="profile_container2">
+
+            <div class="profile_frends">
+
+                <h3>Friends</h3>
+
+                <hr/>
+
+                <div class="roundcorner">
+                    <img src="/img/130.jpg" alt="Фотография 1"/><br/>
+                    <a href="#" th:href="@{/profile}">Ramil</a>
+                </div>
+
+            </div>
+
+            <div class="profile_games">
+                <h3 th:inline="text">My Steam games (3)</h3>
+                <hr/>
+                <div class="roundcorner">
+                    <a href="#">CS GO</a>
+                </div>
+
+                <div class="roundcorner">
+                    <a href="#">Fallout 4</a>
+                </div>
+
+
+                <div class="roundcorner">
+                    <a href="#">Dishonored 2</a>
+                </div>
+
+            </div>
+
+            <div class="profile_groups">
+                <h3>My Groups (0)</h3>
+                <hr/>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="to-top">
+    <div class="container">
+        <div class="row">
+            <div class="to-top-wrap">
+                <a href="#top" class="top"><i class="fa fa-angle-up"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:include="fragments/footer :: footer">
+    <!--footer-->
+</footer>
+
+<script th:src="@{js/vendor/jquery-1.11.2.min.js}"></script>
+<script th:src="@{bower_components/retina.js/dist/retina.js}"></script>
+<script th:src="@{js/jquery.fancybox.pack.js}"></script>
+<script th:src="@{js/vendor/bootstrap.min.js}"></script>
+<script th:src="@{js/scripts.js}"></script>
+<script th:src="@{js/jquery.flexslider-min.js}"></script>
+<script th:src="@{bower_components/classie/classie.js}"></script>
+<script th:src="@{bower_components/jquery-waypoints/lib/jquery.waypoints.min.js}"></script>
+
 </body>
 </html>

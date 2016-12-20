@@ -90,7 +90,8 @@
                     <hr/>
 
                     <div th:each="subscriber: ${subscribers}" class="rouncorner">
-                        <a style="font-size: 15pt; font-family: Verdana,sans-serif; color: #fff;" th:href="@{/profile/{userId}(userId=${subscriber.id})}"
+                        <a style="font-size: 15pt; font-family: Verdana,sans-serif; color: #fff;"
+                           th:href="@{/profile/{userId}(userId=${subscriber.id})}"
                            th:text="${subscriber.fullName}"></a>
                     </div>
 
@@ -102,20 +103,32 @@
 
         <div class="group_profile_container2" style="width: 63%; margin-left:35%; margin-top: 20%;">
 
-            <!--<div class="search_form">-->
-            <!--<div th:if="${isAdmin == true}">-->
-            <!--<form th:action="@{/group/{groupId}/new_post(groupId=${group.id})}" th:object="${post}"-->
-            <!--method="post">-->
-            <!--<input type="text" th:field="*{body}" placeholder="Type post and press enter..."/>-->
-            <!--</form>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--TODO-->
-            <div class="post_form">
-
-
+            <div class="search_form">
+            <div th:if="${isAdmin == true}">
+            <form th:action="@{/group/{groupId}/new_post(groupId=${group.id})}" th:object="${post}"
+            method="post">
+            <input type="text" th:field="*{body}" placeholder="Type post and press enter..."/>
+            </form>
             </div>
+            </div>
+
+            <!--<div class="post_form" style="border: black dashed">-->
+
+                <!--<div th:if="${isAdmin == true}">-->
+                    <!--<form th:action="@{/group/{groupId}/new_post(groupId=${group.id})}" th:object="${post}"-->
+                          <!--method="post">-->
+
+                        <!--<textarea th:field="*{body}" th:maxlength="512" th:charset="utf-8" placeholder="Type here ...">-->
+
+                        <!--</textarea>-->
+
+                        <!--<button type="submit">publish</button>-->
+                        <!--&lt;!&ndash;<input type="text" th:field="*{body}" placeholder="Type post and press enter..."/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</form>&ndash;&gt;-->
+                    <!--</form>-->
+                <!--</div>-->
+
+            <!--</div>-->
 
 
             <div style="padding-bottom: 50px; padding-top: 7px" th:each="post : ${posts}" class="group_profile_posts">

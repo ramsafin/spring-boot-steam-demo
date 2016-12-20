@@ -16,37 +16,41 @@
 
     <div class="container">
         <div class="grouplistbox">
-
-            <div th:if="${my == false}">
+            <div th:if="${my != true}">
                 <div class="search_form">
-                    <form action="#" method="post">
-                        <p>Поиск:<select class="search_form_select" name="search" path="search">
-                            <option value="game">по игре</option>
-                            <option selected="selected" value="name">по названию</option>
+                    <form action="#" th:action="@{/groups}" method="post">
+                        <p style="float: left;">Search :  <select class="search_form_select" name="search" path="search">
+                            <option value="game">by game</option>
+                            <option selected="selected" value="name">by name</option>
+                        </select></p>
+                        <p style="margin-left: 10px;">Sort :  <select class="search_form_select" name="sort">
+                            <option value="date">date</option>
+                            <option value="a">A-Z</option>
+                            <option selected="selected" value="popular">popularity</option>
                         </select></p>
 
-                        <p>Сортировка:<select class="search_form_select" name="sort">
-                            <option value="date">по дате</option>
-                            <option value="a">по алфавиту</option>
-                            <option selected="selected" value="popular">по популярности</option>
-                        </select></p>
                         <input name="criteria" type="text" placeholder="Type group name and press enter..." />
+
                     </form>
                 </div>
 
             </div>
 
-            <h3>Groups</h3>
+            <h3></h3>
 
             <!--Список групп-->
             <div class="grouplistbox_inner">
-                <div th:each="group : ${groups}">
+                <div th:if="${!#lists.isEmpty(groups)}" th:each="group : ${groups}">
                     <div class="group_e">
-                        <img src="img/ipad-device.png" alt="Фотография 1"/>
+                        <img src="/img/ipad-device.png" alt="Фотография 1"/>
                         <p><a th:href="@{/group/{groupId}(groupId=${group.id})}" th:inline="text">Group : [[${group.name}]]</a></p>
                         <span th:inline="text">Game : [[${group.game}]]</span>
                         <span th:inline="text">Members : [[${group.getParticipantList().size() + 1}]]</span>
                     </div>
+                </div>
+
+                <div th:if="${#lists.isEmpty(groups)}">
+                   <h3>Sorry =(</h3>
                 </div>
             </div>
         </div>

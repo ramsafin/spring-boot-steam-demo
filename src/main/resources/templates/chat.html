@@ -17,29 +17,21 @@
 
         <div class="chatbox">
 
-            <h3>Choose dialog ...</h3>
+            <h3 id="title">Choose dialog ...</h3>
 
             <div class="chat_inner">
 
-                <div th:if="${lastChat != null}">
+                <div id="message_place">
 
-                    <div class="chat_in clearfix">
-                        <span class="message" th:inline="text">This is a [[${user.fullName}]]</span>
-                        <span class="author">By somebody to you at 13:30</span>
-                    </div>
-
-                    <div class="chat_out clearfix">
-                        <span class="message">Some message...</span>
-                        <span class="author">By me at 13:31</span>
-                    </div>
+                    <!--messages-->
                 </div>
-
 
             </div>
 
-            <div th:if="${lastChat != null}" class="form">
-                <form id="message_form" action="#" accept-charset="utf-8">
-                    <input type="text" id="message_text" name="message" placeholder="Type message and press enter..."/>
+            <div class="form">
+                <form autocomplete="off" th:autocomplete="off" id="message_form" action="#" accept-charset="utf-8">
+                    <input value="" type="text" id="message_text" name="message"
+                           placeholder="Type message and press enter..."/>
                 </form>
             </div>
 
@@ -51,17 +43,9 @@
 
             <div class="chat_users_inner">
 
-                <!--TODO active chats sorted by updated at-->
-                <div data-chat-id="1" class="roundcorner">
-                    <img src="/img/130.jpg" alt="Фотография 1"/>
-                    <!--TODO handle reload page-->
-                    <span> <a href="#">Somebody</a></span>
-                </div>
-
-                <div data-chat-id="2" class="roundcorner">
-                    <img src="/img/130.jpg" alt="Фотография 1"/>
-                    <!--TODO handle reload page-->
-                    <span> <a href="#">Somebody New</a></span>
+                <div id="danya" class="roundcorner">
+                    <img src="https://pp.vk.me/c625128/v625128786/4ba8c/MKGCesHjKDE.jpg" alt="Фотография 1"/>
+                    <span> <a href="#">Danya</a></span>
                 </div>
 
             </div>
@@ -94,27 +78,57 @@
 <script th:src="@{bower_components/classie/classie.js}"></script>
 <script th:src="@{bower_components/jquery-waypoints/lib/jquery.waypoints.min.js}"></script>
 
-
 <script>
+    'use strict';
+
     $(document).ready(() => {
 
-        //fetch messages, update chats
-        setInterval(() => {
-            console.log('fetching...');
-        }, 2000); //2 seconds
+        var b = false;
+
+        $('#message_text').focus();
 
         //on message sending
         $('#message_form').submit((e) => {
             e.preventDefault();
+
+            var empty = $('#no_messages');
+
+            if (empty) {
+                empty.text('');
+            }
+
             const message = $('#message_form').find('#message_text');
-            console.log(message.val());
+
+            const out = `<div style="font-size: 12pt;" class='chat_out clearfix'>
+                            <span class='message'>${message.val()}</span>
+                            <span class='author'>Me</span>
+                        </div>`;
+
+            message.val(''); //clear input
+
+            $('#message_place').append(out);
+
         });
 
-        //on change dialog, load messages
-        $('[data-chat-id]').click((e) => {
-            e.preventDefault();
-            console.log(e);
-        });
+        $('#danya').click(() => {
+
+            if (!b) {
+                setTimeout(() => {
+
+                    $('#title').text('Dialog with Danya');
+                    const empty = `<div id="no_messages" style="font-size: 12pt; text-align: center" class='clearfix'>
+                               <span class='message'>There is no messages yet...</span>
+                           </div>`;
+
+                    $('#message_place').append(empty);
+
+                    b = true;
+
+                }, 1000);
+            }
+
+        })
+
     })
 </script>
 
