@@ -1,3 +1,3 @@
-# Spring webapp with Steam auth integration
+# Spring Boot Steam auth Demo
 
-Steam openid demo web application.
+Steam authorization demo using openid technology along with Spring Boot.
